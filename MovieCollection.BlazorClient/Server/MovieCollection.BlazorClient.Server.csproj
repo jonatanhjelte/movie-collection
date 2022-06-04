@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\MovieCollection.BlazorClient.Client.csproj" />
-    <ProjectReference Include="..\Shared\MovieCollection.BlazorClient.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 

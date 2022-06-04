@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCollection.BlazorClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCollection.BlazorClient.Client", "MovieCollection.BlazorClient\Client\MovieCollection.BlazorClient.Client.csproj", "{0F8FAA01-C5DB-4DC2-AFAB-8A5F3F89EBAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCollection.BlazorClient.Shared", "MovieCollection.BlazorClient\Shared\MovieCollection.BlazorClient.Shared.csproj", "{EF08387A-AA5E-4B6A-967F-D95C4CCD71CF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{0F8FAA01-C5DB-4DC2-AFAB-8A5F3F89EBAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F8FAA01-C5DB-4DC2-AFAB-8A5F3F89EBAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F8FAA01-C5DB-4DC2-AFAB-8A5F3F89EBAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF08387A-AA5E-4B6A-967F-D95C4CCD71CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF08387A-AA5E-4B6A-967F-D95C4CCD71CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF08387A-AA5E-4B6A-967F-D95C4CCD71CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF08387A-AA5E-4B6A-967F-D95C4CCD71CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

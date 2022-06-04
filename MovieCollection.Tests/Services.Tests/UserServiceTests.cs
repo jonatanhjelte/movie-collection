@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MovieCollection.Tests.ServicesTests
+namespace MovieCollection.Tests.Services.Tests
 {
     public class UserServiceTests
     {

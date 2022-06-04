@@ -1,0 +1,21 @@
+﻿<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="form">
+                    <MudTextField T="string" Label="Username" RequiredError="Username is required" Required="true"/>
+                    <MudTextField T="string" Label="Password" RequiredError="Password is required" Required="true"/>
+            </MudForm>   
+            <MudButton Class="mt-5" OnClick="Login" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">Login</MudButton>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code 
+{
+    MudForm form = new MudForm();
+
+    private void Login()
+    {
+        form.Validate();
+    }
+}
