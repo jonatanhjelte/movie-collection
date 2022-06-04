@@ -5,18 +5,19 @@ using MovieCollection.Domain;
 using MovieCollection.Domain.Exceptions;
 using System.Linq;
 using System;
+using MovieCollection.Repositories.Abstractions;
 
 namespace MovieCollection.Tests
 {
     public class MovieServiceTests
     {
-        private readonly MovieService service = new MovieService();
-        private readonly Movie testMovie = MakeTestMovie();
+        private readonly MovieService _service = new MovieService(TestHelpers.MakeTestMovieRepository());
+        private readonly Movie _testMovie = MakeTestMovie();
 
         [Fact]
         public async Task CreateService_IsEmpty()
         {
-            var movies = await service.GetAllAsync();
+            var movies = await _service.GetAllAsync();
 
             Assert.Empty(movies);
         }
@@ -24,9 +25,9 @@ namespace MovieCollection.Tests
         [Fact]
         public async Task AddMovieThenRemoveMovie_IsEmpty()
         {
-            await service.AddAsync(testMovie);
-            await service.RemoveAsync(testMovie);
-            var movies = await service.GetAllAsync();
+            await _service.AddAsync(_testMovie);
+            await _service.RemoveAsync(_testMovie);
+            var movies = await _service.GetAllAsync();
 
             Assert.Empty(movies);
         }
@@ -34,7 +35,7 @@ namespace MovieCollection.Tests
         [Fact]
         public async Task RemoveMovieThatDoesNotExist_ThrowsMovieDoesNotExistException()
         {
-            await Assert.ThrowsAsync<MovieDoesNotExistException>(async () => await service.RemoveAsync(testMovie));
+            await Assert.ThrowsAsync<MovieDoesNotExistException>(async () => await _service.RemoveAsync(_testMovie));
         }
 
         [Fact]
@@ -42,10 +43,10 @@ namespace MovieCollection.Tests
         {
             var testMovie2 = MakeTestMovie();
 
-            await service.AddAsync(testMovie);
-            await service.AddAsync(testMovie2);
-            await service.RemoveAsync(testMovie);
-            var movies = await service.GetAllAsync();
+            await _service.AddAsync(_testMovie);
+            await _service.AddAsync(testMovie2);
+            await _service.RemoveAsync(_testMovie);
+            var movies = await _service.GetAllAsync();
 
             Assert.Single(movies);
             Assert.Equal(testMovie2, movies.ElementAt(0));
@@ -56,25 +57,25 @@ namespace MovieCollection.Tests
         {
             var testMovie2 = MakeTestMovie();
 
-            await service.AddAsync(testMovie);
-            await service.AddAsync(testMovie2);
-            var movies = await service.GetAllAsync();
+            await _service.AddAsync(_testMovie);
+            await _service.AddAsync(testMovie2);
+            var movies = await _service.GetAllAsync();
 
             Assert.Equal(2, movies.Count());
             Assert.Contains(testMovie2, movies);
-            Assert.Contains(testMovie, movies);
+            Assert.Contains(_testMovie, movies);
         }
 
         [Fact]
         public async Task AddMovieThenUpdateMovie_GetAllReturnsUpdatedMovie()
         {
-            var updatedMovie = testMovie with { Name = $"{testMovie.Name}UPDATED" };
+            var updatedMovie = _testMovie with { Name = $"{_testMovie.Name}UPDATED" };
 
-            await service.AddAsync(testMovie);
-            await service.UpdateAsync(updatedMovie);
-            var movies = await service.GetAllAsync();
+            await _service.AddAsync(_testMovie);
+            await _service.UpdateAsync(updatedMovie);
+            var movies = await _service.GetAllAsync();
 
-            Assert.Equal(updatedMovie, movies.First(m => m.MovieDatabaseId == testMovie.MovieDatabaseId));
+            Assert.Equal(updatedMovie, movies.First(m => m.MovieDatabaseId == _testMovie.MovieDatabaseId));
         }
 
         [Fact]
@@ -82,9 +83,9 @@ namespace MovieCollection.Tests
         {
             var testMovie2 = MakeTestMovie();
 
-            await service.AddAsync(testMovie);
+            await _service.AddAsync(_testMovie);
             
-            await Assert.ThrowsAsync<MovieDoesNotExistException>(async () => await service.UpdateAsync(testMovie2));
+            await Assert.ThrowsAsync<MovieDoesNotExistException>(async () => await _service.UpdateAsync(testMovie2));
         }
 
         private static Movie MakeTestMovie()

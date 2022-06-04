@@ -1,6 +1,8 @@
-﻿using MovieCollection.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCollection.Domain;
 using MovieCollection.Domain.Exceptions;
 using MovieCollection.Repositories;
+using MovieCollection.Repositories.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,36 +13,46 @@ namespace MovieCollection.Services
 {
     public class MovieService
     {
-        List<Movie> movies = new List<Movie>();
+        private List<Movie> _movies = new List<Movie>();
+        private readonly IMovieRepository _repo;
+
+        public MovieService(IMovieRepository repo)
+        {
+            _repo = repo;
+        }
 
         public async Task<IEnumerable<Movie>> GetAllAsync()
         {
-            return movies;
+            return _repo.Movies;
         }
 
         public async Task AddAsync(Movie movie)
         {
-            movies.Add(movie);
+            _repo.Movies.Add(movie);
+            await _repo.SaveChangesAsync();
         }
 
         public async Task RemoveAsync(Movie movie)
         {
-            if (!movies.Contains(movie))
+            if (!_repo.Movies.Contains(movie))
             {
                 throw new MovieDoesNotExistException();
             }
 
-            movies.Remove(movie);
+            _repo.Movies.Remove(movie);
+            await _repo.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Movie movie)
         {
-            var existingMovie = movies.FirstOrDefault(m => m.MovieDatabaseId == movie.MovieDatabaseId);
+            var existingMovie = await _repo
+                .Movies
+                .FirstOrDefaultAsync(m => m.MovieDatabaseId == movie.MovieDatabaseId);
 
             _ = existingMovie ?? throw new MovieDoesNotExistException();
 
-            movies.Remove(existingMovie);
-            movies.Add(movie);
+            existingMovie.Name = movie.Name;
+            await _repo.SaveChangesAsync();
         }
     }
 }
