@@ -1,5 +1,6 @@
 ﻿using MovieCollection.Domain;
 using MovieCollection.Services;
+using MovieCollection.Services.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

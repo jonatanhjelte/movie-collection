@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.ConsoleClient", "MovieCollection.ConsoleClient\MovieCollection.ConsoleClient.csproj", "{FEE96C44-06F0-4DC1-9C02-B5B2417DC154}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.Domain", "MovieCollection.Domain\MovieCollection.Domain.csproj", "{6DF60010-E6A6-42C6-8ECC-C9E1001EF0C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.Tests", "MovieCollection.Tests\MovieCollection.Tests.csproj", "{0D122482-0287-4DB3-B487-08C5163055A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.Services", "MovieCollection.Services\MovieCollection.Services.csproj", "{CD620D2C-A451-4196-BE21-31D03F295BB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCollection.Repositories", "MovieCollection.Repositories\MovieCollection.Repositories.csproj", "{C15C9A80-2DB2-4C16-8C86-51E78C76121E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.Repositories", "MovieCollection.Repositories\MovieCollection.Repositories.csproj", "{C15C9A80-2DB2-4C16-8C86-51E78C76121E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FEE96C44-06F0-4DC1-9C02-B5B2417DC154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEE96C44-06F0-4DC1-9C02-B5B2417DC154}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEE96C44-06F0-4DC1-9C02-B5B2417DC154}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEE96C44-06F0-4DC1-9C02-B5B2417DC154}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DF60010-E6A6-42C6-8ECC-C9E1001EF0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DF60010-E6A6-42C6-8ECC-C9E1001EF0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DF60010-E6A6-42C6-8ECC-C9E1001EF0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieCollection.Services
+namespace MovieCollection.Services.Implementations
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly MovieContext _context;
 
