@@ -1,5 +1,4 @@
 ﻿using MovieCollection.Repositories;
-using MovieCollection.Repositories.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +9,16 @@ namespace MovieCollection.Tests.Helpers
 {
     internal class BaseTestHelper : IDisposable
     { 
-        public IMovieRepository MovieRepository
-        {
-            get
-            {
-                if (_context == null)
-                {
-                    _dbName = Guid.NewGuid().ToString() + ".db";
-                    _context = new MovieContext(_dbName);
-                    _context.Database.EnsureDeleted();
-                    _context.Database.EnsureCreated();
-                }
+        public MovieContext Context { get; private set; }
 
-                return _context;
-            }
-        }
-
-        private MovieContext? _context;
-        private string _dbName = string.Empty;
         private bool _disposedValue;
+
+        public BaseTestHelper()
+        {
+            Context = new MovieContext(Guid.NewGuid().ToString() + ".db");
+            Context.Database.EnsureDeleted();
+            Context.Database.EnsureCreated();
+        }
 
         public void Dispose() => Dispose(true);
 
@@ -36,10 +26,10 @@ namespace MovieCollection.Tests.Helpers
         {
             if (!_disposedValue)
             {
-                if (disposing && _context != null)
+                if (disposing && Context != null)
                 {
-                    _context.Database.EnsureDeleted();
-                    _context.Dispose();
+                    Context.Database.EnsureDeleted();
+                    Context.Dispose();
                 }
 
                 _disposedValue = true;

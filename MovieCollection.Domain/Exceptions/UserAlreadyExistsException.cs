@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieCollection.Domain
+namespace MovieCollection.Domain.Exceptions
 {
-    public record User
+    public class UserAlreadyExistsException : Exception
     {
-        public string UserName { get; set; } = string.Empty;
     }
 }

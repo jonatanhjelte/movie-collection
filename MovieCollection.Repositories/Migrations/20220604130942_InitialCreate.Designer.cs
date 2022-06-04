@@ -11,60 +11,66 @@ using MovieCollection.Repositories;
 namespace MovieCollection.Repositories.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20220604105420_AddUser")]
-    partial class AddUser
+    [Migration("20220604130942_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
 
-            modelBuilder.Entity("MovieCollection.Domain.Movie", b =>
+            modelBuilder.Entity("MovieCollection.Repositories.Models.MovieModel", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("MovieDatabaseId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int?>("UserModelId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("MovieDatabaseId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("MovieCollection.Domain.User", b =>
+            modelBuilder.Entity("MovieCollection.Repositories.Models.UserModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MovieCollection.Domain.Movie", b =>
+            modelBuilder.Entity("MovieCollection.Repositories.Models.MovieModel", b =>
                 {
-                    b.HasOne("MovieCollection.Domain.User", null)
+                    b.HasOne("MovieCollection.Repositories.Models.UserModel", null)
                         .WithMany("Movies")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserModelId");
                 });
 
-            modelBuilder.Entity("MovieCollection.Domain.User", b =>
+            modelBuilder.Entity("MovieCollection.Repositories.Models.UserModel", b =>
                 {
                     b.Navigation("Movies");
                 });

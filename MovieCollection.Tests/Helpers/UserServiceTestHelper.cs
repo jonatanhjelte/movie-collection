@@ -10,32 +10,12 @@ namespace MovieCollection.Tests.Helpers
 {
     internal class UserServiceTestHelper : BaseTestHelper
     {
-        public readonly User ExistingUser;
-        public readonly User NotExistingUser;
         public readonly UserService UserService;
 
         public UserServiceTestHelper()
+            :base()
         {
-            ExistingUser = new User()
-            {
-                Id = 1,
-                UserName = "TestUserName",
-                Password = "TestPassword",
-                Movies = new List<Movie>(),
-            };
-
-            NotExistingUser = new User()
-            {
-                Id = 1,
-                UserName = "NoExist",
-                Password = "NoExistPassword",
-                Movies = new List<Movie>(),
-            };
-
-            MovieRepository.Users.Add(ExistingUser);
-            MovieRepository.SaveChanges();
-
-            UserService = new UserService(MovieRepository);
+            UserService = new UserService(Context);
         }
     }
 }

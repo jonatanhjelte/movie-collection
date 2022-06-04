@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieCollection.Domain;
-using MovieCollection.Repositories.Abstractions;
+using MovieCollection.Repositories.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 
 namespace MovieCollection.Repositories
 {
-    public class MovieContext : DbContext, IMovieRepository
+    public class MovieContext : DbContext
     {
-        public DbSet<Movie> Movies => Set<Movie>();
-        public DbSet<User> Users => Set<User>();
+        public DbSet<MovieModel> Movies { get; set; } = null!;
+        public DbSet<UserModel> Users { get; set; } = null!;
 
         public string DbPath { get; private set; } = string.Empty;
 
-        private readonly string _dbName = "movies.db";
+        private readonly string _dbName;
 
         public MovieContext()
+            :this("movies.db")
         {
-            var savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            DbPath = Path.Join(savePath, _dbName);
         }
 
         public MovieContext(string dbName)
         {
             _dbName = dbName;
+
             var savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             DbPath = Path.Join(savePath, _dbName);
         }
@@ -36,8 +36,9 @@ namespace MovieCollection.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Movie>()
-                .HasKey(m => m.MovieDatabaseId);
+            modelBuilder.Entity<UserModel>()
+                .Property(u => u.UserName)
+                    .UseCollation("NOCASE");
         }
     }
 }
