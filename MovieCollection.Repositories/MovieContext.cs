@@ -12,6 +12,7 @@ namespace MovieCollection.Repositories
     public class MovieContext : DbContext, IMovieRepository
     {
         public DbSet<Movie> Movies => Set<Movie>();
+        public DbSet<User> Users => Set<User>();
 
         public string DbPath { get; private set; } = string.Empty;
 
@@ -19,6 +20,13 @@ namespace MovieCollection.Repositories
 
         public MovieContext()
         {
+            var savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            DbPath = Path.Join(savePath, _dbName);
+        }
+
+        public MovieContext(string dbName)
+        {
+            _dbName = dbName;
             var savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             DbPath = Path.Join(savePath, _dbName);
         }

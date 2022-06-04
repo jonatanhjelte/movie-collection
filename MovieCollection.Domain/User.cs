@@ -10,6 +10,7 @@ namespace MovieCollection.Domain
     {
         public int Id { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public IList<Movie> Movies { get; set; } = new List<Movie>();
     }
 }

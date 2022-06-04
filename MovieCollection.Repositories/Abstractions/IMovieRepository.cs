@@ -11,6 +11,8 @@ namespace MovieCollection.Repositories.Abstractions
     public interface IMovieRepository
     {
         DbSet<Movie> Movies { get; }
+        DbSet<User> Users { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        int SaveChanges();
     }
 }

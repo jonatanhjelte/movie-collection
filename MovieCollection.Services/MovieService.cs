@@ -23,7 +23,7 @@ namespace MovieCollection.Services
 
         public async Task<IEnumerable<Movie>> GetAllAsync()
         {
-            return _repo.Movies;
+            return await _repo.Movies.ToListAsync();
         }
 
         public async Task AddAsync(Movie movie)
