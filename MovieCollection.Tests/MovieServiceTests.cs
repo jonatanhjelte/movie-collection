@@ -52,6 +52,20 @@ namespace MovieCollection.Tests
         } 
 
         [Fact]
+        public async Task Add2Movies_GetAllReturnsBoth()
+        {
+            var testMovie2 = MakeTestMovie();
+
+            await service.AddAsync(testMovie);
+            await service.AddAsync(testMovie2);
+            var movies = await service.GetAllAsync();
+
+            Assert.Equal(2, movies.Count());
+            Assert.Contains(testMovie2, movies);
+            Assert.Contains(testMovie, movies);
+        }
+
+        [Fact]
         public async Task AddMovieThenUpdateMovie_GetAllReturnsUpdatedMovie()
         {
             var updatedMovie = testMovie with { Name = $"{testMovie.Name}UPDATED" };
@@ -60,7 +74,7 @@ namespace MovieCollection.Tests
             await service.UpdateAsync(updatedMovie);
             var movies = await service.GetAllAsync();
 
-            Assert.Equal(updatedMovie, movies.First(m => m.Id == testMovie.Id));
+            Assert.Equal(updatedMovie, movies.First(m => m.MovieDatabaseId == testMovie.MovieDatabaseId));
         }
 
         [Fact]
@@ -79,7 +93,7 @@ namespace MovieCollection.Tests
 
             return new Movie()
             {
-                Id = rnd.Next(),
+                MovieDatabaseId = rnd.Next().ToString(),
                 Name = Guid.NewGuid().ToString(),
             };
         }

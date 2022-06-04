@@ -1,5 +1,6 @@
 ﻿using MovieCollection.Domain;
 using MovieCollection.Domain.Exceptions;
+using MovieCollection.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace MovieCollection.Services
 
         public async Task UpdateAsync(Movie movie)
         {
-            var existingMovie = movies.FirstOrDefault(m => m.Id == movie.Id);
+            var existingMovie = movies.FirstOrDefault(m => m.MovieDatabaseId == movie.MovieDatabaseId);
 
             _ = existingMovie ?? throw new MovieDoesNotExistException();
 

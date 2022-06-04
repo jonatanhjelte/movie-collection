@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace MovieCollection.Domain
 {
-    public record Movie : BaseEntity
+    public record Movie
     {
+        public string MovieDatabaseId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
     }
 }
