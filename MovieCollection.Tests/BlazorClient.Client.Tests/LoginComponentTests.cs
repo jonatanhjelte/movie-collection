@@ -1,5 +1,5 @@
 ﻿using Bunit;
-using MovieCollection.BlazorClient.Client.Components;
+using MovieCollection.WebApp.Client.Components;
 using MudBlazor;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MovieCollection.Tests.BlazorClient.Client.Tests
+namespace MovieCollection.Tests.WebApp.Client.Tests
 {
     public class LoginComponentTests : TestContext
     {

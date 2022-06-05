@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "MovieCollection.BlazorClient": {
+    "MovieCollection.WebApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

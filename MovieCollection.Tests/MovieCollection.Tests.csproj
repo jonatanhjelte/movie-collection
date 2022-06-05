@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovieCollection.BlazorClient\Client\MovieCollection.BlazorClient.Client.csproj" />
+    <ProjectReference Include="..\MovieCollection.BlazorClient\Client\MovieCollection.WebApp.Client.csproj" />
     <ProjectReference Include="..\MovieCollection.Services\MovieCollection.Services.csproj" />
   </ItemGroup>
 
