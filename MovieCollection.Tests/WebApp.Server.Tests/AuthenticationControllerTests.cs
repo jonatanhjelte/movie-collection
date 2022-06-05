@@ -91,12 +91,44 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
                 m => m.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties?>()), Times.Once);
         }
 
+        [Fact]
+        public async Task GetCurrentUser_NotLoggedIn_ReturnsUnauthorized()
+        {
+            var client = SetupTestAndGetClient();
+
+            var response = await client.GetAsync("currentuser");
+
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.Unauthorized);
+        }
+
+        [Fact]
+        public async Task GetCurrentUser_LoggedIn_ReturnsCurrentUser()
+        {
+            var testUser = new User() { UserName = "TestUser" };
+            var userServiceMock = new Mock<IUserService>();
+            userServiceMock.Setup(
+                us => us.AuthenticateAndGetUserAsync(testUser.UserName, "testPassword").Result)
+                        .Returns(testUser);
+            var client = SetupTestAndGetClient(userServiceMock.Object, null, true);
+
+            var _ = await client.PostAsJsonAsync("login", new LoginRequest() { UserName = testUser.UserName, Password = "testPassword" });
+            var response = await client.GetAsync("currentuser");
+            var text = await response.Content.ReadAsStringAsync();
+            var returnedUser = JsonConvert.DeserializeObject<User>(text);
+
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.Equal(testUser, returnedUser);
+        }
+
         private HttpContent BuildContent(object jsonObj)
         {
             return new StringContent(JsonConvert.SerializeObject(jsonObj), Encoding.UTF8, "application/json");
         }
 
-        private HttpClient SetupTestAndGetClient(IUserService? userServiceMock = null, IAuthenticationService? authMock = null)
+        private HttpClient SetupTestAndGetClient(
+            IUserService? userServiceMock = null, 
+            IAuthenticationService? authMock = null,
+            bool skipAuthMock = false)
         {
             if (userServiceMock == null)
             {
@@ -115,7 +147,10 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
                     {
                         services.AddScoped(p => userServiceMock);
 
-                        services.AddSingleton(p => authMock);
+                        if (!skipAuthMock)
+                        {
+                            services.AddSingleton(p => authMock);
+                        }
                     });
                 });
             
@@ -124,5 +159,4 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             return client;
         }
     }
-
 }

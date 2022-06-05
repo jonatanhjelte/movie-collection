@@ -1,21 +1,64 @@
-﻿<MudGrid>
+﻿@using MovieCollection.WebApp.Shared.Requests
+<MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @ref="form">
-                    <MudTextField T="string" Label="Username" RequiredError="Username is required" Required="true"/>
-                    <MudTextField T="string" Label="Password" RequiredError="Password is required" Required="true"/>
+                    <MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
+                    <MudTextField T="string" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
             </MudForm>   
             <MudButton Class="mt-5" OnClick="Login" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">Login</MudButton>
+            @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
+            }
         </MudPaper>
     </MudItem>
 </MudGrid>
 
 @code 
 {
-    MudForm form = new MudForm();
+    [Parameter]
+    public EventCallback<LoginRequest> OnLogin { get; set; }
+    [Parameter]
+    public string ErrorMessage { get; set; } = string.Empty;
+    [Parameter]
+    public EventCallback OnTextChanged { get; set; }
 
+    private MudForm form = new MudForm();
+    private string userName
+    {
+        get
+        {
+            return _userName;
+        }
+        set
+        {
+            _userName = value;
+            OnTextChanged.InvokeAsync();
+        }
+    }
+    private string _userName = string.Empty;
+
+    private string password
+    {
+        get
+        {
+            return _password;
+        }
+        set
+        {
+            _password = value;
+            OnTextChanged.InvokeAsync();
+        }
+    }
+    private string _password = string.Empty;
     private void Login()
     {
         form.Validate();
+
+        if (form.IsValid)
+        {
+            OnLogin.InvokeAsync(new LoginRequest() { UserName = userName, Password = password });      
+        }
     }
 }

@@ -14,4 +14,9 @@
     <PackageReference Include="MudBlazor" Version="6.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\MovieCollection.Domain\MovieCollection.Domain.csproj" />
+    <ProjectReference Include="..\..\MovieCollection.WebApp.Shared\MovieCollection.WebApp.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

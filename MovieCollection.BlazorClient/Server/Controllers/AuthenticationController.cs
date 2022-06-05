@@ -31,18 +31,31 @@ namespace MovieCollection.WebApp.Server.Controllers
             var claim = new Claim(ClaimTypes.Name, user.UserName);
             var claimsIdentity = new ClaimsIdentity(new[] { claim }, "serverAuth");
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-            await HttpContext.SignInAsync("cookies", claimsPrincipal);
+            await HttpContext.SignInAsync(claimsPrincipal);
 
             return Ok(user);
         }
 
-        [HttpPost("create")]
-        public async Task<ActionResult<User>> CreateAsync(LoginRequest loginRequest)
+        [HttpGet("currentuser")]
+        public async Task<ActionResult<User>> GetCurrentUserAsync()
         {
-            var user = new User() { UserName = loginRequest.UserName };
-            await _userService.CreateUserAsync(user, loginRequest.Password);
+            if (User.Identity != null 
+                && User.Identity.IsAuthenticated)
+            {
+                return await Task.FromResult(
+                    Ok(new User() { UserName = User.FindFirstValue(ClaimTypes.Name)}));
+            }
 
-            return Ok(user);
+            return await Task.FromResult(Unauthorized("Not logged in"));
         }
+
+        //[HttpPost("create")]
+        //public async Task<ActionResult<User>> CreateAsync(LoginRequest loginRequest)
+        //{
+        //    var user = new User() { UserName = loginRequest.UserName };
+        //    await _userService.CreateUserAsync(user, loginRequest.Password);
+
+        //    return Ok(user);
+        //}
     }
 }

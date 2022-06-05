@@ -16,7 +16,7 @@ builder.Services.AddAuthentication(o =>
 {
     o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddCookie("cookies");
+.AddCookie();
 
 builder.Services.AddDbContext<MovieContext>(
     options => options.UseSqlite("movie.db"));
