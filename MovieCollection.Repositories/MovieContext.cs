@@ -21,6 +21,7 @@ namespace MovieCollection.Repositories
         public MovieContext()
             :this("movies.db")
         {
+            Database.EnsureCreated();
         }
 
         public MovieContext(string dbName)

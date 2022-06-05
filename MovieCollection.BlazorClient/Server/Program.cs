@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using MovieCollection.Repositories;
+using MovieCollection.Services;
+using MovieCollection.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie("cookies");
+
+builder.Services.AddDbContext<MovieContext>(
+    options => options.UseSqlite("movie.db"));
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -28,7 +44,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
+app.UseAuthentication();
 
 app.MapRazorPages();
 app.MapControllers();
