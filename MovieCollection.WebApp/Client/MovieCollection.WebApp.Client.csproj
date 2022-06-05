@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\MovieCollection.Domain\MovieCollection.Domain.csproj" />
-    <ProjectReference Include="..\..\MovieCollection.WebApp.Shared\MovieCollection.WebApp.Shared.csproj" />
+    <ProjectReference Include="..\Shared\MovieCollection.WebApp.Shared.csproj" />
   </ItemGroup>
 
 </Project>

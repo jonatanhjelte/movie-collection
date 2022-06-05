@@ -11,7 +11,6 @@ using Microsoft.Extensions.Options;
 using Moq;
 using MovieCollection.Domain;
 using MovieCollection.Services;
-using MovieCollection.WebApp.Server.Controllers;
 using MovieCollection.WebApp.Shared.Requests;
 using Newtonsoft.Json;
 using System;

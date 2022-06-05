@@ -15,10 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\MovieCollection.Repositories\MovieCollection.Repositories.csproj" />
     <ProjectReference Include="..\..\MovieCollection.Services\MovieCollection.Services.csproj" />
-    <ProjectReference Include="..\..\MovieCollection.WebApp.Shared\MovieCollection.WebApp.Shared.csproj" />
     <ProjectReference Include="..\Client\MovieCollection.WebApp.Client.csproj" />
+    <ProjectReference Include="..\Shared\MovieCollection.WebApp.Shared.csproj" />
   </ItemGroup>
-	
+
 	<ItemGroup>
 		<InternalsVisibleTo Include="MovieCollection.Tests" />
 	</ItemGroup>

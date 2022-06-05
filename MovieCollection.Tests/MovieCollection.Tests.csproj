@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovieCollection.BlazorClient\Client\MovieCollection.WebApp.Client.csproj" />
-    <ProjectReference Include="..\MovieCollection.BlazorClient\Server\MovieCollection.WebApp.Server.csproj" />
     <ProjectReference Include="..\MovieCollection.Services\MovieCollection.Services.csproj" />
+    <ProjectReference Include="..\MovieCollection.WebApp\Client\MovieCollection.WebApp.Client.csproj" />
+    <ProjectReference Include="..\MovieCollection.WebApp\Server\MovieCollection.WebApp.Server.csproj" />
   </ItemGroup>
 
 </Project>
