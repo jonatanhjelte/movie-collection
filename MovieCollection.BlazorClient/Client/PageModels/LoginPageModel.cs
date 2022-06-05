@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace MovieCollection.WebApp.Client.PageModels
 {
-    public class LoginPageModel : ComponentBase
+    public class LoginPageModel : BasePageModel
     {
         [Inject]
         public HttpClient HttpClient { get; set; } = new HttpClient();
@@ -20,7 +20,11 @@ namespace MovieCollection.WebApp.Client.PageModels
 
             var response = await HttpClient.PostAsJsonAsync("login", request);
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo("home", true);
+            }
+            else
             {
                 ErrorMessage = "Invalid username or password";
             }

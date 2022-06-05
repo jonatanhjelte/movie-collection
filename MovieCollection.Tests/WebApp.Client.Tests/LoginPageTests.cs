@@ -1,5 +1,6 @@
 ﻿using Bunit;
 using Bunit.TestDoubles;
+using MovieCollection.Tests.Helpers;
 using MovieCollection.WebApp.Client.Components;
 using MovieCollection.WebApp.Client.Pages;
 using MudBlazor;
@@ -12,15 +13,8 @@ using Xunit;
 
 namespace MovieCollection.Tests.WebApp.Client.Tests
 {
-    public class LoginPageTests : TestContext
+    public class LoginPageTests : BaseTestPage
     {
-        private readonly TestAuthorizationContext _authContext;
-
-        public LoginPageTests()
-        {
-            _authContext = this.AddTestAuthorization();
-        }
-
         [Fact]
         public void HasUserName()
         {
@@ -94,6 +88,17 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
             input.Change("test");
 
             Assert.DoesNotContain(errorMessage.ToUpper(), cut.Markup.ToUpper());
+        }
+
+        [Fact]
+        public void IsAlreadyLoggedIn_RedirectsToHome()
+        {
+            _authContext.SetAuthorized("testUser");
+            
+            var cut = RenderComponent<Login>();
+            cut.Render();
+
+            Assert.Contains("HOME", _mockNavMan.LastCalledUri.ToUpper());
         }
     }
 }

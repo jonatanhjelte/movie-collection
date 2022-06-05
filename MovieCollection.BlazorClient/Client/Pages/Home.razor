@@ -1,0 +1,15 @@
+﻿@page "/home"
+@inherits HomePageModel
+
+<AuthorizeView>
+	<Authorized>
+		
+	</Authorized>
+	<NotAuthorized>
+		@if (true) NavigationManager.NavigateTo("login", true);
+	</NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}

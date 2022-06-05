@@ -1,11 +1,12 @@
 ﻿@page "/"
+@page "/login"
 @inherits LoginPageModel
 
 <PageTitle>Index</PageTitle>
 
 <AuthorizeView>
 	<Authorized>
-		<p>Grattis balla!</p>
+		@if (true) NavigationManager.NavigateTo("home");
 	</Authorized>
 
 	<NotAuthorized>

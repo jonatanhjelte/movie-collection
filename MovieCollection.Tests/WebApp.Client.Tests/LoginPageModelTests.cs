@@ -39,9 +39,11 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
         }
 
         [Fact]
-        public async Task Login_UserNameAndPassword_SendsProperRequest()
+        public async Task Login_UserNameAndPassword_SendsProperRequestAndRedirects()
         {
             var pageModel = new LoginPageModel();
+            var mockNavMan = new MockNavigationManager();
+            pageModel.NavigationManager = mockNavMan;
             var mockHandler = new MockHttpMessageHandler();
             pageModel.HttpClient = new HttpClient(mockHandler) { BaseAddress = new Uri(@"http://test.com") };
 
@@ -56,6 +58,7 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
             var text = await content.ReadAsStringAsync();
             Assert.Contains("user123", text);
             Assert.Contains("password123", text);
+            Assert.Contains("HOME", mockNavMan.LastCalledUri.ToUpper());
         }
 
         [Fact]

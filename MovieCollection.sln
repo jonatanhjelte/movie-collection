@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.WebApp.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.WebApp.Client", "MovieCollection.BlazorClient\Client\MovieCollection.WebApp.Client.csproj", "{0F8FAA01-C5DB-4DC2-AFAB-8A5F3F89EBAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCollection.WebApp.Shared", "MovieCollection.WebApp.Shared\MovieCollection.WebApp.Shared.csproj", "{7929D60A-2EEB-41B6-9ADF-DB37FBD6AC9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCollection.WebApp.Shared", "MovieCollection.WebApp.Shared\MovieCollection.WebApp.Shared.csproj", "{7929D60A-2EEB-41B6-9ADF-DB37FBD6AC9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
