@@ -40,6 +40,17 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
         }
 
         [Fact]
+        public void PasswordText_IsMasked()
+        {
+            var cut = RenderComponent<Login>();
+            var passwordText = cut.Find("input#password");
+
+            var type = passwordText.GetAttribute("type");
+
+            Assert.Equal("password", type);
+        }
+
+        [Fact]
         public void HasCreateAccountButton()
         {
             var cut = RenderComponent<Login>();

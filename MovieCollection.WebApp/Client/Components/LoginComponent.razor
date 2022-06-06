@@ -3,7 +3,7 @@
 <MudPaper Class="pa-4 mr-5">
     <MudForm @ref="form">
             <MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
-            <MudTextField T="string" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
+            <MudTextField T="string" id="password" InputType="InputType.Password" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
     </MudForm>   
     <MudButton Class="mt-5" OnClick="Login" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">Login</MudButton>
     @if (!string.IsNullOrWhiteSpace(ErrorMessage))

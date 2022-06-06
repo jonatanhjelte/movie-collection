@@ -1,0 +1,19 @@
+﻿@page "/CreateAccount"
+
+<h3>CreateAccount</h3>
+
+<MudForm @ref="form">
+	<MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
+	<MudTextField T="string" @bind-Text="email" Label="Email" RequiredError="Email is required" Required="true"/>
+	<MudTextField id="password" T="string" InputType="InputType.Password" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
+	<MudTextField id="passwordConfirm" T="string" InputType="InputType.Password" @bind-Text="confirmPassword" Label="Confirm password" RequiredError="Password is required" Required="true"/>
+</MudForm>
+
+
+@code {
+	private MudForm form = new MudForm();
+	private string userName = string.Empty;
+	private string email = string.Empty;
+	private string password = string.Empty;
+	private string confirmPassword = string.Empty;
+}
