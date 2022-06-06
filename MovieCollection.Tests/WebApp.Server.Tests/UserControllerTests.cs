@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using MovieCollection.Domain;
+using MovieCollection.Domain.Exceptions;
 using MovieCollection.Services;
 using MovieCollection.WebApp.Shared.Requests;
 using MovieCollection.WebApp.Shared.Routes;
@@ -26,7 +27,7 @@ using Xunit;
 
 namespace MovieCollection.Tests.WebApp.Server.Tests
 {
-    public class AuthenticationControllerTests
+    public class UserControllerTests
     {
         [Fact]
         public async Task Login_UsernameEmpty_ReturnsBadRequestWithMessage()
@@ -70,7 +71,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
         [Fact]
         public async Task Login_CorrectUserNameAndPassword_ReturnsAndSignInUser()
         {
-            var testUser = new User() { UserName = "testUser" };
+            var testUser = new User() { UserName = "testUser", Email = "testEmail" };
             var userServiceMock = new Mock<IUserService>();
             userServiceMock.Setup(
                 us => us.AuthenticateAndGetUserAsync(testUser.UserName, "testPassword").Result)
@@ -89,6 +90,79 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             // Verify SignInAsync was called at least once
             authenticationMock.Verify(
                 m => m.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties?>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Create_UserNameEmpty_ReturnsBadRequestWithMessage()
+        {
+            var request = new CreateUserRequest() { Password = "123", Email = "123" };
+            var client = SetupTestAndGetClient();
+
+            var response = await client.PostAsJsonAsync(MovieRoute.CreateUser, request);
+            var text = await response.Content.ReadAsStringAsync();
+
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.BadRequest);
+            Assert.Contains("USERNAME FIELD IS REQUIRED", text.ToUpper());
+        }
+
+        [Fact]
+        public async Task Create_PasswordEmpty_ReturnsBadRequestWithMessage()
+        {
+            var request = new CreateUserRequest() { UserName = "123", Email = "123" };
+            var client = SetupTestAndGetClient();
+
+            var response = await client.PostAsJsonAsync(MovieRoute.CreateUser, request);
+            var text = await response.Content.ReadAsStringAsync();
+
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.BadRequest);
+            Assert.Contains("PASSWORD FIELD IS REQUIRED", text.ToUpper());
+        }
+
+        [Fact]
+        public async Task Create_EmailEmpty_ReturnsBadRequestWithMessage()
+        {
+            var request = new CreateUserRequest() { UserName = "123", Password = "123" };
+            var client = SetupTestAndGetClient();
+
+            var response = await client.PostAsJsonAsync(MovieRoute.CreateUser, request);
+            var text = await response.Content.ReadAsStringAsync();
+
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.BadRequest);
+            Assert.Contains("EMAIL FIELD IS REQUIRED", text.ToUpper());
+        }
+
+        [Fact]
+        public async Task Create_UserNameInUse_ReturnsConflictWithMessage()
+        {
+            var request = new CreateUserRequest() { UserName = "123", Password = "123", Email = "123" };
+            var uService = new Mock<IUserService>();
+                uService.Setup(us => us.CreateUserAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .Throws<UserAlreadyExistsException>();
+            var client = SetupTestAndGetClient(uService.Object);
+
+            var response = await client.PostAsJsonAsync(MovieRoute.CreateUser, request);
+            var text = await response.Content.ReadAsStringAsync();
+
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.Conflict);
+            Assert.Contains("USERNAME ALREADY EXISTS", text.ToUpper());
+        }
+
+        [Fact]
+        public async Task Create_CorrectInformation_CreatesAndReturnsUser()
+        {
+            var request = new CreateUserRequest() { UserName = "user", Password = "password", Email = "email" };
+            var expectedUser = new User() { UserName = request.UserName, Email = request.Email };
+            var uService = new Mock<IUserService>();
+            var client = SetupTestAndGetClient(uService.Object);
+
+            var response = await client.PostAsJsonAsync(MovieRoute.CreateUser, request);
+            var user = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+
+            uService.Verify(us => us.CreateUserAsync(
+                It.Is<User>(u => u == expectedUser),
+                It.Is<string>(s => s == request.Password)));
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.Equal(expectedUser, user);
         }
 
         [Fact]

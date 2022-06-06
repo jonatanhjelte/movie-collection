@@ -12,6 +12,7 @@ namespace MovieCollection.Repositories.Models
     {
         public int Id { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public ICollection<MovieModel> Movies { get; set; } = new List<MovieModel>();
 
@@ -20,6 +21,7 @@ namespace MovieCollection.Repositories.Models
             return new User()
             {
                 UserName = UserName,
+                Email = Email,
             };
         }
     }

@@ -15,6 +15,7 @@ namespace MovieCollection.Repositories.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserName = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

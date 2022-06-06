@@ -8,7 +8,7 @@ namespace MovieCollection.Domain
 {
     public record Movie
     {
-        public string MovieDatabaseId { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
+        public string MovieDatabaseId { get; init; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
     }
 }

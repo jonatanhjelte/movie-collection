@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using MovieCollection.Domain;
+using MovieCollection.Domain.Exceptions;
 using MovieCollection.Services;
 using MovieCollection.WebApp.Shared.Requests;
 using System.Net;
@@ -20,9 +21,9 @@ namespace MovieCollection.WebApp.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> LoginAsync(LoginRequest loginRequest)
+        public async Task<ActionResult<User>> LoginAsync(LoginRequest request)
         {
-            var user = await _userService.AuthenticateAndGetUserAsync(loginRequest.UserName, loginRequest.Password);
+            var user = await _userService.AuthenticateAndGetUserAsync(request.UserName, request.Password);
 
             if (user == null)
             {
@@ -50,13 +51,21 @@ namespace MovieCollection.WebApp.Server.Controllers
             return await Task.FromResult(Unauthorized("Not logged in"));
         }
 
-        //[HttpPost("create")]
-        //public async Task<ActionResult<User>> CreateAsync(LoginRequest loginRequest)
-        //{
-        //    var user = new User() { UserName = loginRequest.UserName };
-        //    await _userService.CreateUserAsync(user, loginRequest.Password);
+        [HttpPost("create")]
+        public async Task<ActionResult<User>> CreateAsync(CreateUserRequest request)
+        {
+            var user = new User() { UserName = request.UserName, Email = request.Email };
 
-        //    return await Task.FromResult(Ok());
-        //}
+            try
+            {
+                await _userService.CreateUserAsync(user, request.Password);
+            }
+            catch (UserAlreadyExistsException)
+            {
+                return Conflict("UserName already exists");
+            }
+
+            return Ok(user);
+        }
     }
 }

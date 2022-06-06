@@ -47,6 +47,7 @@ namespace MovieCollection.Services.Implementations
             {
                 UserName = user.UserName,
                 PasswordHash = hashedPassword,
+                Email = user.Email,
                 Id = -1,
             };
 

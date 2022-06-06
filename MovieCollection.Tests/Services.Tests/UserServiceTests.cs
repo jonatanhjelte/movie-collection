@@ -16,11 +16,13 @@ namespace MovieCollection.Tests.Services.Tests
         private readonly User ExistingUser = new User()
         {
             UserName = "TestUserName",
+            Email = "TestEmail",
         };
 
         private readonly User NotExistingUser = new User()
         {
             UserName = "NoExist",
+            Email = "NoExistEmail",
         };
 
         private readonly string existingPassword = "123|Abc!^2";
@@ -92,6 +94,18 @@ namespace MovieCollection.Tests.Services.Tests
             await InsertExistingUser(helper);
 
             await Assert.ThrowsAsync<UserAlreadyExistsException>(async () => await InsertExistingUser(helper));
+        }
+
+        [Fact]
+        public async Task CreateUserAsync_CreateUser_CreatesUserWithAllFields()
+        {
+            using var helper = new UserServiceTestHelper();
+
+            await InsertExistingUser(helper);
+
+            var createdUser = helper.Context.Users.First(u => u.UserName == ExistingUser.UserName);
+            Assert.Equal(createdUser.UserName, ExistingUser.UserName);
+            Assert.Equal(createdUser.Email, ExistingUser.Email);
         }
 
         private async Task InsertExistingUser(UserServiceTestHelper helper)

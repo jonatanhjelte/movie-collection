@@ -11,7 +11,7 @@ using MovieCollection.Repositories;
 namespace MovieCollection.Repositories.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20220604130942_InitialCreate")]
+    [Migration("20220606123415_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,10 @@ namespace MovieCollection.Repositories.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
