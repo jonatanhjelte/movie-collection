@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="FileMigrations\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

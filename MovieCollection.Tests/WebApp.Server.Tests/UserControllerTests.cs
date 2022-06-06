@@ -217,15 +217,6 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
                 authMock = new Mock<IAuthenticationService>().Object;
             }
 
-            //var inMemorySettings = new Dictionary<string, string> {
-            //    {"ConnectionStrings:Database", $"Data Source=test.db"},
-            //    };
-
-            //var configuration = new ConfigurationBuilder()
-            //    .AddInMemoryCollection(inMemorySettings)
-            //    .Build();
-
-
             var application = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
                 {

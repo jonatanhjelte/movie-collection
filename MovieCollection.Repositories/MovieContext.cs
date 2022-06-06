@@ -26,12 +26,5 @@ namespace MovieCollection.Repositories
         {
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("Database"));
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserModel>()
-                .Property(u => u.UserName)
-                    .UseCollation("NOCASE");
-        }
     }
 }

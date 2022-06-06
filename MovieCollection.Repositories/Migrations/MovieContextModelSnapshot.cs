@@ -66,8 +66,7 @@ namespace MovieCollection.Repositories.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .UseCollation("NOCASE");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
