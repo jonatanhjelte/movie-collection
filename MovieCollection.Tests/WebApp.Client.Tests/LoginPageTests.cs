@@ -40,6 +40,25 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
         }
 
         [Fact]
+        public void HasCreateAccountButton()
+        {
+            var cut = RenderComponent<Login>();
+
+            Assert.Contains("CREATE ACCOUNT", cut.Markup.ToUpper());
+        }
+
+        [Fact]
+        public void CreateAccountLink_LinksToCreateAccountPage()
+        {
+            var cut = RenderComponent<Login>();
+            var link = cut.Find("a");
+
+            var href = link.GetAttribute("href");
+
+            Assert.Equal("CreateAccount", href);
+        }
+
+        [Fact]
         public void ClickLogin_UserNameEmpty_ShowsError()
         {
             var cut = RenderComponent<Login>();

@@ -1,19 +1,17 @@
 ﻿@using MovieCollection.WebApp.Shared.Requests
-<MudGrid>
-    <MudItem xs="12" sm="7">
-        <MudPaper Class="pa-4">
-            <MudForm @ref="form">
-                    <MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
-                    <MudTextField T="string" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
-            </MudForm>   
-            <MudButton Class="mt-5" OnClick="Login" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">Login</MudButton>
-            @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-            {
-                <MudAlert Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
-            }
-        </MudPaper>
-    </MudItem>
-</MudGrid>
+
+<MudPaper Class="pa-4 mr-5">
+    <MudForm @ref="form">
+            <MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
+            <MudTextField T="string" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
+    </MudForm>   
+    <MudButton Class="mt-5" OnClick="Login" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">Login</MudButton>
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+    {
+        <MudAlert Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
+    }
+    <MudText Class="mt-4">Not a member yet? <MudLink Href="CreateAccount">Click here to create account</MudLink></MudText>
+</MudPaper>
 
 @code 
 {
