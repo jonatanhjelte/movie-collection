@@ -5,7 +5,17 @@
             <MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
             <MudTextField T="string" id="password" InputType="InputType.Password" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
     </MudForm>   
-    <MudButton Class="mt-5" OnClick="Login" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">Login</MudButton>
+    <MudButton Disabled="@isBusy" Class="mt-5" OnClick="Login" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">
+        @if (@isBusy)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+            <MudText Class="ms-2">Logging in ...</MudText>     
+        }
+        else
+        {
+            <MudText>Login</MudText>
+        }
+    </MudButton>
     @if (!string.IsNullOrWhiteSpace(ErrorMessage))
     {
         <MudAlert Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
@@ -22,6 +32,7 @@
     [Parameter]
     public EventCallback OnTextChanged { get; set; }
 
+    private bool isBusy = false;
     private MudForm form = new MudForm();
     private string userName
     {
@@ -50,13 +61,17 @@
         }
     }
     private string _password = string.Empty;
-    private void Login()
+    private async Task Login()
     {
-        form.Validate();
+        await form.Validate();
 
         if (form.IsValid)
         {
-            OnLogin.InvokeAsync(new LoginRequest() { UserName = userName, Password = password });      
+            isBusy = true;
+            StateHasChanged();
+            await OnLogin.InvokeAsync(new LoginRequest() { UserName = userName, Password = password });
+            isBusy = false;
+            StateHasChanged();
         }
     }
 }
