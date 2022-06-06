@@ -1,4 +1,5 @@
 ﻿using Moq;
+
 using MovieCollection.Tests.Helpers;
 using MovieCollection.WebApp.Client.PageModels;
 using MovieCollection.WebApp.Shared.Requests;
@@ -14,43 +15,42 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
 {
     public class LoginPageModelTests
     {
+        private LoginPageModel _model;
+        private MockHttpMessageHandler _mockHandler;
+
+        public LoginPageModelTests()
+        {
+            _model = new LoginPageModel();
+            _mockHandler = new MockHttpMessageHandler();
+            _model.HttpClient = new HttpClient(_mockHandler) { BaseAddress = new Uri(@"http:\\test.com")};
+        }
+
         [Fact]
         public async Task Login_EmptyUserName_DoesNothing()
         {
-            var pageModel = new LoginPageModel();
-            var mockHandler = new MockHttpMessageHandler();
-            pageModel.HttpClient = new HttpClient(mockHandler);
+            await _model.Login(new LoginRequest() { UserName = string.Empty, Password = "123" });
 
-            await pageModel.Login(new LoginRequest() { UserName = string.Empty, Password = "123" });
-
-            Assert.Empty(mockHandler.RequestMessages);
+            Assert.Empty(_mockHandler.RequestMessages);
         }
 
         [Fact]
         public async Task Login_EmptyPassword_DoesNothing()
         {
-            var pageModel = new LoginPageModel();
-            var mockHandler = new MockHttpMessageHandler();
-            pageModel.HttpClient = new HttpClient(mockHandler);
+            await _model.Login(new LoginRequest() { UserName = "123", Password = string.Empty });
 
-            await pageModel.Login(new LoginRequest() { UserName = "123", Password = string.Empty });
-
-            Assert.Empty(mockHandler.RequestMessages);
+            Assert.Empty(_mockHandler.RequestMessages);
         }
 
         [Fact]
         public async Task Login_UserNameAndPassword_SendsProperRequestAndRedirects()
-        {
-            var pageModel = new LoginPageModel();
+        {            
             var mockNavMan = new MockNavigationManager();
-            pageModel.NavigationManager = mockNavMan;
-            var mockHandler = new MockHttpMessageHandler();
-            pageModel.HttpClient = new HttpClient(mockHandler) { BaseAddress = new Uri(@"http://test.com") };
+            _model.NavigationManager = mockNavMan;
 
-            await pageModel.Login(new LoginRequest() { UserName = "user123", Password = "password123" });
+            await _model.Login(new LoginRequest() { UserName = "user123", Password = "password123" });
 
-            Assert.Single(mockHandler.RequestMessages);
-            var content = mockHandler.RequestMessages.First().Content;
+            Assert.Single(_mockHandler.RequestMessages);
+            var content = _mockHandler.RequestMessages.First().Content;
             if (content == null)
             {
                 throw new ArgumentNullException("No content in request.");
@@ -63,15 +63,12 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
 
         [Fact]
         public async Task Login_UserNameAndPasswordGivesUnauthorized_AddsErrorToModel()
-        {
-            var pageModel = new LoginPageModel();
-            var mockHandler = new MockHttpMessageHandler();
-            mockHandler.DefaultResponse = new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized);
-            pageModel.HttpClient = new HttpClient(mockHandler) { BaseAddress = new Uri(@"http://test.com") };
+        {            
+            _mockHandler.DefaultResponse = new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized);
 
-            await pageModel.Login(new LoginRequest() { UserName = "user123", Password = "password123" });
+            await _model.Login(new LoginRequest() { UserName = "user123", Password = "password123" });
 
-            Assert.Contains("INVALID USERNAME OR PASSWORD", pageModel.ErrorMessage.ToUpper());
+            Assert.Contains("INVALID USERNAME OR PASSWORD", _model.ErrorMessage.ToUpper());
         }
 
         [Fact]

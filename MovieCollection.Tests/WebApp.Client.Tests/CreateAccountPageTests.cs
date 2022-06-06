@@ -37,6 +37,16 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
         }
 
         [Fact]
+        public void HasCreateButton()
+        {
+            var cut = RenderComponent<CreateAccount>();
+
+            var button = cut.Find("button#createButton");
+
+            Assert.Contains("CREATE", button.TextContent.ToUpper());
+        }
+
+        [Fact]
         public void HasConfirmPassword()
         {
             var cut = RenderComponent<CreateAccount>();
@@ -64,6 +74,21 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
             var type = passwordText.GetAttribute("type");
 
             Assert.Equal("password", type);
+        }
+
+        [Fact]
+        public void ClickCreateAccount_PasswordAndConfirmPasswordMismatch_ShowsErrorMessage()
+        {
+            var cut = RenderComponent<CreateAccount>();
+            var passwordText = cut.Find("input#password");
+            var confirmPasswordText = cut.Find("input#passwordConfirm");
+            var button = cut.Find("button#createButton");
+
+            passwordText.Change("password");
+            confirmPasswordText.Change("pAssWORD");
+            button.Click();
+
+            Assert.Contains("PASSWORD MISMATCH", cut.Markup.ToUpper());
         }
     }
 }

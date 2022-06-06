@@ -1,14 +1,31 @@
 ﻿@page "/CreateAccount"
+@inherits CreateAccountPageModel
 
 <h3>CreateAccount</h3>
 
-<MudForm @ref="form">
-	<MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
-	<MudTextField T="string" @bind-Text="email" Label="Email" RequiredError="Email is required" Required="true"/>
-	<MudTextField id="password" T="string" InputType="InputType.Password" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
-	<MudTextField id="passwordConfirm" T="string" InputType="InputType.Password" @bind-Text="confirmPassword" Label="Confirm password" RequiredError="Password is required" Required="true"/>
-</MudForm>
-
+<MudPaper Class="pa-4 mr-5">
+	<MudForm @ref="form">
+		<MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
+		<MudTextField T="string" @bind-Text="email" Label="Email" RequiredError="Email is required" Required="true"/>
+		<MudTextField id="password" T="string" InputType="InputType.Password" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
+		<MudTextField id="passwordConfirm" T="string" InputType="InputType.Password" @bind-Text="confirmPassword" Label="Confirm password" RequiredError="Password is required" Required="true"/>
+		<MudButton id="createButton" OnClick="ClickCreateButton" Disabled="@isBusy" Class="mt-5" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">
+			@if (@isBusy)
+			{
+				<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+				<MudText Class="ms-2">Creating account...</MudText>     
+			}
+			else
+			{
+				<MudText>Create account</MudText>
+			}
+		</MudButton>
+		@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+		{
+			<MudAlert Class="mt-2" Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
+		}
+	</MudForm>
+</MudPaper>
 
 @code {
 	private MudForm form = new MudForm();
@@ -16,4 +33,21 @@
 	private string email = string.Empty;
 	private string password = string.Empty;
 	private string confirmPassword = string.Empty;
+	private bool isBusy = false;
+
+	private async Task ClickCreateButton()
+	{
+		ErrorMessage = string.Empty;
+		if (password != confirmPassword)
+		{
+			ErrorMessage = "Password and confirm password mismatch";
+			return;
+		}
+
+		isBusy = true;
+		StateHasChanged();
+		await Create(new CreateUserRequest() { UserName = userName, Email = email, Password = password });
+		isBusy = false;
+		StateHasChanged();
+	}
 }
