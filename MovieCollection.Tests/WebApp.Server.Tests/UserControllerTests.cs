@@ -5,12 +5,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using MovieCollection.Domain;
 using MovieCollection.Domain.Exceptions;
+using MovieCollection.Repositories;
 using MovieCollection.Services;
 using MovieCollection.WebApp.Shared.Requests;
 using MovieCollection.WebApp.Shared.Routes;
@@ -214,11 +217,33 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
                 authMock = new Mock<IAuthenticationService>().Object;
             }
 
+            //var inMemorySettings = new Dictionary<string, string> {
+            //    {"ConnectionStrings:Database", $"Data Source=test.db"},
+            //    };
+
+            //var configuration = new ConfigurationBuilder()
+            //    .AddInMemoryCollection(inMemorySettings)
+            //    .Build();
+
+
             var application = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
                 {
+                    builder.ConfigureAppConfiguration((context, configBuilder) =>
+                    {
+                        configBuilder.AddInMemoryCollection(
+                            new Dictionary<string, string>
+                            {
+                                     {"ConnectionStrings:Database", $"Data Source=test.db"},
+                            });
+                    });
+
                     builder.ConfigureServices(services =>
                     {
+                        services.Remove(services.Single(d => d.ServiceType == typeof(DbContextOptions<MovieContext>)));
+                        services.Remove(services.Single(d => d.ServiceType == typeof(MovieContext)));
+
+                        services.AddDbContext<MovieContext, FileMovieContext>();
                         services.AddScoped(p => userServiceMock);
 
                         if (!skipAuthMock)

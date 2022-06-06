@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace MovieCollection.Repositories.Migrations
+namespace MovieCollection.Repositories.FileMigrations
 {
     public partial class InitialCreate : Migration
     {

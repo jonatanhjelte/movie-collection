@@ -4,16 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using MovieCollection.Repositories;
 using MovieCollection.Services;
 using MovieCollection.Services.Implementations;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-var rootPath = builder.Environment.WebRootPath ?? builder.Environment.ContentRootPath;
-var dbDir = Path.Combine(rootPath, "app_data");
-if (!Directory.Exists(dbDir))
-{
-    Directory.CreateDirectory(dbDir);
-}
+builder.Logging.AddAzureWebAppDiagnostics();
 
 // Add services to the container.
 
@@ -26,10 +20,17 @@ builder.Services.AddAuthentication(o =>
 })
 .AddCookie();
 
+var connString = builder.Configuration.GetConnectionString("Database");
 
+if (Debugger.IsAttached)
+{
+    builder.Services.AddDbContext<MovieContext, FileMovieContext>();
+}
+else
+{
+    builder.Services.AddDbContext<MovieContext>();
+}
 
-builder.Services.AddDbContext<MovieContext>(
-    options => options.UseSqlite($"Data Source={Path.Combine(dbDir, "movies.db")}"));
 
 builder.Services.AddScoped<IUserService, UserService>();
 
@@ -62,8 +63,13 @@ app.MapFallbackToFile("index.html");
 
 using (var scope = app.Services.CreateScope())
 {
-    var dataContext = scope.ServiceProvider.GetRequiredService<MovieContext>();
-    dataContext.Database.Migrate();
+    var dataContext = scope.ServiceProvider.GetService<MovieContext>()
+        ?? scope.ServiceProvider.GetService<FileMovieContext>();
+
+    if (dataContext != null)
+    {
+        dataContext.Database.Migrate();
+    }
 }
 
 app.Run();

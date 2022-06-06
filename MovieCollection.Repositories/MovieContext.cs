@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MovieCollection.Domain;
 using MovieCollection.Repositories.Models;
 using System;
@@ -14,14 +15,17 @@ namespace MovieCollection.Repositories
         public DbSet<MovieModel> Movies { get; set; } = null!;
         public DbSet<UserModel> Users { get; set; } = null!;
 
+        protected readonly IConfiguration Configuration;
 
-        public MovieContext(DbContextOptions options)
-            :base(options)
+        public MovieContext(IConfiguration configuration)
         {
+            Configuration = configuration;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite();
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("Database"));
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

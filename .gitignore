@@ -12,6 +12,9 @@
 movies.db
 movies.db-shm
 movies.db-wal
+megamovie.db
+megamovie.db-shm
+megamovie.db-wal
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

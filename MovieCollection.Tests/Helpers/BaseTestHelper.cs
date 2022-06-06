@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MovieCollection.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,14 @@ namespace MovieCollection.Tests.Helpers
 
         public BaseTestHelper()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<MovieContext>();
-            optionsBuilder.UseSqlite($"Data Source={Guid.NewGuid().ToString() + ".db"}");
-            Context = new MovieContext(optionsBuilder.Options);
+            var inMemorySettings = new Dictionary<string, string> {
+                {"ConnectionStrings:Database", $"Data Source={Guid.NewGuid().ToString() + ".db"}"},
+                };
+
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+            Context = new FileMovieContext(configuration);
             Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
         }

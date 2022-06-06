@@ -8,10 +8,10 @@ using MovieCollection.Repositories;
 
 #nullable disable
 
-namespace MovieCollection.Repositories.Migrations
+namespace MovieCollection.Repositories.FileMigrations
 {
-    [DbContext(typeof(MovieContext))]
-    [Migration("20220606123415_InitialCreate")]
+    [DbContext(typeof(FileMovieContext))]
+    [Migration("20220606192711_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
