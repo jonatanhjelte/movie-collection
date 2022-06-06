@@ -1,4 +1,5 @@
-﻿using MovieCollection.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCollection.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,9 @@ namespace MovieCollection.Tests.Helpers
 
         public BaseTestHelper()
         {
-            Context = new MovieContext(Guid.NewGuid().ToString() + ".db");
+            var optionsBuilder = new DbContextOptionsBuilder<MovieContext>();
+            optionsBuilder.UseSqlite($"Data Source={Guid.NewGuid().ToString() + ".db"}");
+            Context = new MovieContext(optionsBuilder.Options);
             Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
         }

@@ -14,25 +14,14 @@ namespace MovieCollection.Repositories
         public DbSet<MovieModel> Movies { get; set; } = null!;
         public DbSet<UserModel> Users { get; set; } = null!;
 
-        public string DbPath { get; private set; } = string.Empty;
 
-        private readonly string _dbName;
-
-        public MovieContext()
-            :this("movies.db")
+        public MovieContext(DbContextOptions options)
+            :base(options)
         {
-            Database.EnsureCreated();
-        }
-
-        public MovieContext(string dbName)
-        {
-            _dbName = dbName;
-
-            DbPath = _dbName;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={DbPath}");
+        => options.UseSqlite();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

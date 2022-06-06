@@ -25,9 +25,13 @@ namespace MovieCollection.WebApp.Client.PageModels
             {
                 NavigationManager.NavigateTo("home", true);
             }
-            else
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 ErrorMessage = "Invalid username or password";
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong, please try again later";
             }
         }
 

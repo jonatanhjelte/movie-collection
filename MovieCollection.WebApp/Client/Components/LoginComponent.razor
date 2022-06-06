@@ -18,7 +18,7 @@
     </MudButton>
     @if (!string.IsNullOrWhiteSpace(ErrorMessage))
     {
-        <MudAlert Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
+        <MudAlert Class="mt-2" Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
     }
     <MudText Class="mt-4">Not a member yet? <MudLink Href="CreateAccount">Click here to create account</MudLink></MudText>
 </MudPaper>
