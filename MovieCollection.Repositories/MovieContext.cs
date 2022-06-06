@@ -28,8 +28,7 @@ namespace MovieCollection.Repositories
         {
             _dbName = dbName;
 
-            var savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            DbPath = Path.Join(savePath, _dbName);
+            DbPath = _dbName;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using MovieCollection.Domain;
+using MovieCollection.WebApp.Shared.Routes;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
@@ -19,7 +20,7 @@ namespace MovieCollection.WebApp.Client.Providers
             User? currentUser = null;
             try
             {
-                currentUser = await _httpClient.GetFromJsonAsync<User>("currentuser");
+                currentUser = await _httpClient.GetFromJsonAsync<User>(MovieRoute.CurrentUser);
 
                 if (currentUser != null && !string.IsNullOrEmpty(currentUser.UserName))
                 {

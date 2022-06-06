@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MovieCollection.WebApp.Shared.Requests;
+using MovieCollection.WebApp.Shared.Routes;
 using System.Net.Http.Json;
 
 namespace MovieCollection.WebApp.Client.PageModels
@@ -18,7 +19,7 @@ namespace MovieCollection.WebApp.Client.PageModels
                 return;
             }
 
-            var response = await HttpClient.PostAsJsonAsync("login", request);
+            var response = await HttpClient.PostAsJsonAsync(MovieRoute.LoginUser, request);
 
             if (response.IsSuccessStatusCode)
             {

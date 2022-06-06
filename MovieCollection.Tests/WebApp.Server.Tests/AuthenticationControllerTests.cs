@@ -12,6 +12,7 @@ using Moq;
 using MovieCollection.Domain;
 using MovieCollection.Services;
 using MovieCollection.WebApp.Shared.Requests;
+using MovieCollection.WebApp.Shared.Routes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             var client = SetupTestAndGetClient(null);
             var content = BuildContent(new LoginRequest() { Password = "123" });
             
-            var response = await client.PostAsync("login", content);
+            var response = await client.PostAsync(MovieRoute.LoginUser, content);
             var text = await response.Content.ReadAsStringAsync();
 
             Assert.False(response.IsSuccessStatusCode);
@@ -46,7 +47,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             var client = SetupTestAndGetClient(null);
             var content = BuildContent(new LoginRequest() { UserName = "123" });
 
-            var response = await client.PostAsync("login", content);
+            var response = await client.PostAsync(MovieRoute.LoginUser, content);
             var text = await response.Content.ReadAsStringAsync();
 
             Assert.False(response.IsSuccessStatusCode);
@@ -59,7 +60,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             var client = SetupTestAndGetClient();
             var content = BuildContent(new LoginRequest() { UserName = "123", Password = "123" });
 
-            var response = await client.PostAsync("login", content);
+            var response = await client.PostAsync(MovieRoute.LoginUser, content);
             var text = await response.Content.ReadAsStringAsync();
 
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.Unauthorized);
@@ -79,7 +80,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             var client = SetupTestAndGetClient(userServiceMock.Object, authenticationMock.Object);
             var content = BuildContent(new LoginRequest() { UserName = testUser.UserName, Password = "testPassword" });
 
-            var response = await client.PostAsync("login", content);
+            var response = await client.PostAsync(MovieRoute.LoginUser, content);
             var text = await response.Content.ReadAsStringAsync();
             var returnedUser = JsonConvert.DeserializeObject<User>(text);
 
@@ -95,7 +96,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
         {
             var client = SetupTestAndGetClient();
 
-            var response = await client.GetAsync("currentuser");
+            var response = await client.GetAsync(MovieRoute.CurrentUser);
 
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.Unauthorized);
         }
@@ -110,8 +111,8 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
                         .Returns(testUser);
             var client = SetupTestAndGetClient(userServiceMock.Object, null, true);
 
-            var _ = await client.PostAsJsonAsync("login", new LoginRequest() { UserName = testUser.UserName, Password = "testPassword" });
-            var response = await client.GetAsync("currentuser");
+            var _ = await client.PostAsJsonAsync(MovieRoute.LoginUser, new LoginRequest() { UserName = testUser.UserName, Password = "testPassword" });
+            var response = await client.GetAsync(MovieRoute.CurrentUser);
             var text = await response.Content.ReadAsStringAsync();
             var returnedUser = JsonConvert.DeserializeObject<User>(text);
 

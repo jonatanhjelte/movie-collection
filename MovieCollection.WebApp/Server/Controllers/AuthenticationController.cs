@@ -9,11 +9,12 @@ using System.Security.Claims;
 namespace MovieCollection.WebApp.Server.Controllers
 {
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    [Route("[controller]")]
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
-        public AuthenticationController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -36,7 +37,7 @@ namespace MovieCollection.WebApp.Server.Controllers
             return Ok(user);
         }
 
-        [HttpGet("currentuser")]
+        [HttpGet("current")]
         public async Task<ActionResult<User>> GetCurrentUserAsync()
         {
             if (User.Identity != null 
@@ -55,7 +56,7 @@ namespace MovieCollection.WebApp.Server.Controllers
         //    var user = new User() { UserName = loginRequest.UserName };
         //    await _userService.CreateUserAsync(user, loginRequest.Password);
 
-        //    return Ok(user);
+        //    return await Task.FromResult(Ok());
         //}
     }
 }
