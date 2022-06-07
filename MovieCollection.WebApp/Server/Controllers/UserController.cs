@@ -34,8 +34,21 @@ namespace MovieCollection.WebApp.Server.Controllers
             var claimsIdentity = new ClaimsIdentity(new[] { claim }, "serverAuth");
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await HttpContext.SignInAsync(claimsPrincipal);
-
+            
             return Ok(user);
+        }
+
+        [HttpPost("logout")]
+        public async Task<ActionResult> LogoutAsync()
+        {
+            if (User.Identity != null
+                && User.Identity.IsAuthenticated)
+            {
+                await HttpContext.SignOutAsync();
+                return Ok();
+            }
+
+            return Unauthorized();
         }
 
         [HttpGet("current")]

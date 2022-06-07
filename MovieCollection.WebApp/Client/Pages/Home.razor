@@ -3,7 +3,7 @@
 
 <AuthorizeView>
 	<Authorized>
-		<MudText>Congratulations, you are now logged in.</MudText>
+		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Logout">Logout</MudButton>
 	</Authorized>
 	<NotAuthorized>
 		@if (true) NavigationManager.NavigateTo("login", true);

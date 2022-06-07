@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -195,6 +196,34 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
 
             Assert.True(response.IsSuccessStatusCode);
             Assert.Equal(testUser, returnedUser);
+        }
+
+        [Fact]
+        public async Task Logout_NotLoggedIn_ReturnsUnauthorized()
+        {
+            var client = SetupTestAndGetClient();
+
+            var response = await client.PostAsync(MovieRoute.LogoutUser, null);
+
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Logout_IsLoggedIn_LogsOutUser()
+        {
+            var testUser = new User() { UserName = "TestUser" };
+            var userServiceMock = new Mock<IUserService>();
+            userServiceMock.Setup(
+                us => us.AuthenticateAndGetUserAsync(testUser.UserName, "testPassword").Result)
+                        .Returns(testUser);
+            var client = SetupTestAndGetClient(userServiceMock.Object, null, true);
+
+            var _ = await client.PostAsJsonAsync(MovieRoute.LoginUser, new LoginRequest() { UserName = testUser.UserName, Password = "testPassword" });
+            var logoutResponse = await client.PostAsync(MovieRoute.LogoutUser, null);
+            var currentUserResponse = await client.GetAsync(MovieRoute.CurrentUser);
+
+            Assert.True(logoutResponse.IsSuccessStatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized, currentUserResponse.StatusCode);
         }
 
         private HttpContent BuildContent(object jsonObj)

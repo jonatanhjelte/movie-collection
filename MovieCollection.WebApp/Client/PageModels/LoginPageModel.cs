@@ -7,8 +7,6 @@ namespace MovieCollection.WebApp.Client.PageModels
 {
     public class LoginPageModel : BasePageModel
     {
-        [Inject]
-        public HttpClient HttpClient { get; set; } = new HttpClient();
         public string ErrorMessage { get; set; } = string.Empty;
 
         public async Task Login(LoginRequest request)

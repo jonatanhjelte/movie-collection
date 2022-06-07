@@ -1,7 +1,11 @@
-Movie Collection - Open source project for storing and rating movies
+Movie Collection - Store and rate movies
 ========================================
+
+Information
+----------
+Created mainly as a practice project for TDD
 
 Features
 --------
-- Flexible hosting: supports running as ASP.NET web application OR as an application locally on your computer
-- Fully tested: Created as a test project for TDD, this solution strives for high test coverage
+- Great test coverage
+- Not many yet, hopefully some good to come :)

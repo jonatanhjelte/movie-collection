@@ -10,6 +10,7 @@ namespace MovieCollection.WebApp.Shared.Routes
     {
         public static readonly string CurrentUser = "user/current";
         public static readonly string LoginUser = "user/login";
+        public static readonly string LogoutUser = "user/logout";
         public static readonly string CreateUser = "user/create";
     }
 }
