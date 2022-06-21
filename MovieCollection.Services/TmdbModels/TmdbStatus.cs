@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MovieCollection.Services.TmdbModels
 {
-    internal enum TmdbStatus
+    public enum TmdbStatus
     {
         Rumored,
         Planned,

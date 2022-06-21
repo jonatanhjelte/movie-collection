@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MovieCollection.Services.TmdbModels
 {
-    internal record TmdbMovie
+    public record TmdbMovie
     {
         public int id { get; set; }
         public bool adult { get; set; }
@@ -36,7 +36,7 @@ namespace MovieCollection.Services.TmdbModels
         {
             return new Movie()
             {
-                MovieDatabaseId = imdb_id ?? "-1",
+                MovieDatabaseId = imdb_id ?? "tt0000000",
                 Name = title,
             };
         }

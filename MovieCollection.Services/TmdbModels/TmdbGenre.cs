@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MovieCollection.Services.TmdbModels
 {
-    internal record TmdbGenre
+    public record TmdbGenre
     {
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
