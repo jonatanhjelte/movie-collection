@@ -26,28 +26,3 @@
 		}
 	</MudForm>
 </MudPaper>
-
-@code {
-	private MudForm form = new MudForm();
-	private string userName = string.Empty;
-	private string email = string.Empty;
-	private string password = string.Empty;
-	private string confirmPassword = string.Empty;
-	private bool isBusy = false;
-
-	private async Task ClickCreateButton()
-	{
-		ErrorMessage = string.Empty;
-		if (password != confirmPassword)
-		{
-			ErrorMessage = "Password and confirm password mismatch";
-			return;
-		}
-
-		isBusy = true;
-		StateHasChanged();
-		await Create(new CreateUserRequest() { UserName = userName, Email = email, Password = password });
-		isBusy = false;
-		StateHasChanged();
-	}
-}
