@@ -34,7 +34,9 @@ namespace MovieCollection.Tests.Services.Tests
             using var helper = new UserServiceTestHelper();
             await InsertExistingUser(helper);
 
-            var user = await helper.UserService.AuthenticateAndGetUserAsync(NotExistingUser.UserName, notExistingPassword);
+            var user = await helper.UserService.AuthenticateAndGetUserAsync
+                (NotExistingUser.UserName, 
+                notExistingPassword);
 
             Assert.Null(user);
         }
@@ -45,7 +47,9 @@ namespace MovieCollection.Tests.Services.Tests
             using var helper = new UserServiceTestHelper();
             await InsertExistingUser(helper);
 
-            var user = await helper.UserService.AuthenticateAndGetUserAsync(ExistingUser.UserName, existingPassword + "wrong");
+            var user = await helper.UserService.AuthenticateAndGetUserAsync(
+                ExistingUser.UserName, 
+                existingPassword + "wrong");
 
             Assert.Null(user);
         }
@@ -56,7 +60,9 @@ namespace MovieCollection.Tests.Services.Tests
             using var helper = new UserServiceTestHelper();
             await InsertExistingUser(helper);
 
-            var user = await helper.UserService.AuthenticateAndGetUserAsync(ExistingUser.UserName, existingPassword);
+            var user = await helper.UserService.AuthenticateAndGetUserAsync(
+                ExistingUser.UserName, 
+                existingPassword);
 
             Assert.Equal(ExistingUser, user);
         }
@@ -67,8 +73,12 @@ namespace MovieCollection.Tests.Services.Tests
             using var helper = new UserServiceTestHelper();
             await InsertExistingUser(helper);
 
-            var user = await helper.UserService.AuthenticateAndGetUserAsync(ExistingUser.UserName.ToUpper(), existingPassword);
-            var user2 = await helper.UserService.AuthenticateAndGetUserAsync(ExistingUser.UserName.ToLower(), existingPassword);
+            var user = await helper.UserService.AuthenticateAndGetUserAsync(
+                ExistingUser.UserName.ToUpper(), 
+                existingPassword);
+            var user2 = await helper.UserService.AuthenticateAndGetUserAsync(
+                ExistingUser.UserName.ToLower(), 
+                existingPassword);
 
 
             Assert.Equal(ExistingUser, user);
@@ -81,7 +91,11 @@ namespace MovieCollection.Tests.Services.Tests
             using var helper = new UserServiceTestHelper();
             await InsertExistingUser(helper);
 
-            var dbPassword = helper.Context.Users.Single(u => u.UserName == ExistingUser.UserName).PasswordHash;
+            var dbPassword = helper
+                .Context
+                .Users
+                .Single(u => u.UserName == ExistingUser.UserName)
+                .PasswordHash;
 
             Assert.NotEqual(dbPassword, existingPassword);
         }
@@ -93,7 +107,8 @@ namespace MovieCollection.Tests.Services.Tests
 
             await InsertExistingUser(helper);
 
-            await Assert.ThrowsAsync<UserAlreadyExistsException>(async () => await InsertExistingUser(helper));
+            await Assert.ThrowsAsync<UserAlreadyExistsException>(
+                async () => await InsertExistingUser(helper));
         }
 
         [Fact]

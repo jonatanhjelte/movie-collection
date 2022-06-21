@@ -1,4 +1,5 @@
-﻿using MovieCollection.Tests.Helpers;
+﻿using Bunit;
+using MovieCollection.Tests.Helpers;
 using MovieCollection.WebApp.Client.Pages;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,17 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
             var cut = RenderComponent<Home>();
 
             Assert.Contains("LOGIN", _mockNavMan.LastCalledUri.ToUpper());
+        }
+
+        [Fact]
+        public void HasSearchMovieTextField()
+        {
+            _authContext.SetAuthorized("testUser");
+            var cut = RenderComponent<Home>();
+
+            var text = cut.Find("input#searchMovie");
+
+            Assert.NotNull(text);
         }
     }
 }

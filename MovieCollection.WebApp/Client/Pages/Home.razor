@@ -4,8 +4,14 @@
 <AuthorizeView>
 	<Authorized>
 		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Logout">Logout</MudButton>
+
+		<MudTextField T="string" id="searchMovie" @bind-Text="searchMovie" />
 	</Authorized>
 	<NotAuthorized>
 		@if (true) NavigationManager.NavigateTo("login", true);
 	</NotAuthorized>
 </AuthorizeView>
+
+@code{
+	private string searchMovie = string.Empty;
+}
