@@ -9,8 +9,6 @@ namespace MovieCollection.WebApp.Client.PageModels
 {
     public class CreateAccountPageModel : BasePageModel
     {
-        public string ErrorMessage { get; set; } = string.Empty;
-
         protected MudForm form = new MudForm();
         protected string userName = string.Empty;
         protected string email = string.Empty;

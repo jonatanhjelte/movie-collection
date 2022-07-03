@@ -8,6 +8,5 @@ namespace MovieCollection.Domain.Exceptions
 {
     public class ApiCommunicationException : Exception
     {
-
     }
 }

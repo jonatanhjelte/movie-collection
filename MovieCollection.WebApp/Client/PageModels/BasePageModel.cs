@@ -7,8 +7,11 @@ namespace MovieCollection.WebApp.Client.PageModels
     {
         [Inject]
         public NavigationManager NavigationManager { get; set; } = null!;
+
         [Inject]
         public HttpClient HttpClient { get; set; } = new HttpClient();
+
+        public string ErrorMessage { get; set; } = string.Empty;
 
         public async Task Logout()
         {

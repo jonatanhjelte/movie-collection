@@ -15,8 +15,8 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
 {
     public class LoginPageModelTests
     {
-        private LoginPageModel _model;
-        private MockHttpMessageHandler _mockHandler;
+        private readonly LoginPageModel _model;
+        private readonly MockHttpMessageHandler _mockHandler;
 
         public LoginPageModelTests()
         {
