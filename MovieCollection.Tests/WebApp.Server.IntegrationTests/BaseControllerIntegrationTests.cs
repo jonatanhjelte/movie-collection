@@ -41,8 +41,8 @@ namespace MovieCollection.Tests.WebApp.Server.IntegrationTests
                             new Dictionary<string, string>
                             {
                                      {"ConnectionStrings:Database", $"Data Source=test.db"},
-                                     {"TmdApi:BaseUrl", @"http://testurl.com/"},
-                                     {"TmdApi:ApiKey", @"ApiKey123!"},
+                                     {"TmdbApi:BaseUrl", @"http://testurl.com/"},
+                                     {"TmdbApi:ApiKey", @"ApiKey123!"},
                             });
                     });
 

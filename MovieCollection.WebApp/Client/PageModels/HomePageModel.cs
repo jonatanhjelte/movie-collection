@@ -1,5 +1,6 @@
 ﻿using MovieCollection.Domain;
 using MovieCollection.WebApp.Shared.Routes;
+using MovieCollection.WebApp.Shared.StaticConfig;
 using System.Text.Json;
 
 namespace MovieCollection.WebApp.Client.PageModels
@@ -23,9 +24,9 @@ namespace MovieCollection.WebApp.Client.PageModels
                 return Enumerable.Empty<Movie>();
             }
 
-            var movies = JsonSerializer.Deserialize<IEnumerable<Movie>>(text);
+            var movies = JsonSerializer.Deserialize<IEnumerable<Movie>>(text, JsonOptions.Default);
 
-            return movies ?? Enumerable.Empty<Movie>();
+             return movies ?? Enumerable.Empty<Movie>();
         }
     }
 }

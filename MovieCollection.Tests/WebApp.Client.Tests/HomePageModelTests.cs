@@ -3,13 +3,13 @@ using MovieCollection.Domain;
 using MovieCollection.Services;
 using MovieCollection.Tests.Helpers;
 using MovieCollection.WebApp.Client.PageModels;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -63,7 +63,7 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
         public async Task FindMoviesAsync_HttpGetsMovieList_ReturnsMovieList()
         {
             var response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StringContent(JsonConvert.SerializeObject(testMovies), Encoding.UTF8, @"application/json");
+            response.Content = new StringContent(JsonSerializer.Serialize(testMovies), Encoding.UTF8, @"application/json");
             _mockHandler.DefaultResponse = response;
 
             var movies = await _model.FindMoviesAsync("1234");
@@ -75,7 +75,7 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
         public async Task FindMoviesAsync_ValidInput_QueriesForName()
         {
             var response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StringContent(JsonConvert.SerializeObject(testMovies), Encoding.UTF8, @"application/json");
+            response.Content = new StringContent(JsonSerializer.Serialize(testMovies), Encoding.UTF8, @"application/json");
             _mockHandler.DefaultResponse = response;
 
             var movies = await _model.FindMoviesAsync("queryparam");

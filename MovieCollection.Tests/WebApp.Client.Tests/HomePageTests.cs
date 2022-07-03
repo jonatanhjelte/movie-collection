@@ -30,5 +30,15 @@ namespace MovieCollection.Tests.WebApp.Client.Tests
 
             Assert.NotNull(text);
         }
+        
+        [Fact]
+        public void ClickSearch_CallsHomePageModelSearch()
+        {
+            _authContext.SetAuthorized("testUser");
+            var cut = RenderComponent<Home>();
+
+            var text = cut.Find("input#searchMovie");
+            text.TextContent = "testMovie";
+        }
     }
 }

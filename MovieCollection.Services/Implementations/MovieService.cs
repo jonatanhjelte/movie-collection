@@ -21,8 +21,8 @@ namespace MovieCollection.Services.Implementations
         public MovieService(HttpClient httpClient, IConfiguration config)
         {
             _httpClient = httpClient;
-            _baseUrl = config["TmdApi:BaseUrl"].TrimEnd('/');
-            _apiKey = config["TmdApi:ApiKey"];
+            _baseUrl = config["TmdbApi:BaseUrl"].TrimEnd('/');
+            _apiKey = config["TmdbApi:ApiKey"];
         }
 
         public async Task<IEnumerable<Movie>> FindMoviesByNameAsync(string name)
@@ -43,14 +43,14 @@ namespace MovieCollection.Services.Implementations
             
             try
             {
-                var jsonMovies = JsonSerializer.Deserialize<IEnumerable<TmdbMovie>>(responseText);
+                var jsonResult = JsonSerializer.Deserialize<TmdbMovieResult>(responseText);
 
-                if (jsonMovies == null)
+                if (jsonResult == null)
                 {
                     return new List<Movie>();
                 }
 
-                return jsonMovies.Select(m => m.ToMovie());
+                return jsonResult.results.Select(m => m.ToMovie());
             }
             catch (JsonException)
             {

@@ -52,13 +52,19 @@ namespace MovieCollection.Tests.Services.Tests
             using var helper = MakeHelper();
             var jsonMovie1 = new TmdbMovie() { imdb_id = "1234imdb", title = "1234titlenumber1" };
             var jsonMovie2 = new TmdbMovie() { imdb_id = "5678imdb", title = "1234titlenumber2" };
-            var jsonMovies = new List<TmdbMovie>()
+            var jsonResult = new TmdbMovieResult()
             {
-                jsonMovie1,
-                jsonMovie2,
+                page = 1,
+                total_pages = 1,
+                total_results = 2,
+                results = new List<TmdbMovie>()
+                {
+                    jsonMovie1,
+                    jsonMovie2,
+                }
             };
             var response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StringContent(JsonConvert.SerializeObject(jsonMovies), Encoding.UTF8, @"application/json");
+            response.Content = new StringContent(JsonConvert.SerializeObject(jsonResult), Encoding.UTF8, @"application/json");
             helper.MockHttpMessageHandler.DefaultResponse = response;
 
             var movies = await helper.MovieService.FindMoviesByNameAsync("1234");

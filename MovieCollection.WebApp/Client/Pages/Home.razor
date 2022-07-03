@@ -5,7 +5,13 @@
 	<Authorized>
 		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Logout">Logout</MudButton>
 
-		<MudTextField T="string" id="searchMovie" @bind-Text="searchMovie" />
+		<MudTextField T="string" id="searchMovie" @bind-Text="searchMovie" Immediate="true" />
+
+		@foreach (var movie in movieResults)
+		{
+			<p>@movie.Name</p>
+		}
+
 	</Authorized>
 	<NotAuthorized>
 		@if (true) NavigationManager.NavigateTo("login", true);
@@ -13,5 +19,27 @@
 </AuthorizeView>
 
 @code{
-	private string searchMovie = string.Empty;
+	private List<Movie> movieResults = new List<Movie>();
+
+	private string searchMovie 
+	{
+		get
+		{
+			return _searchMovie;
+		}
+
+		set
+		{
+			_searchMovie = value;
+			_ = OnSearchMovieChanged();
+		}
+	}
+	private string _searchMovie = string.Empty;
+
+	private async Task OnSearchMovieChanged()
+	{
+		var movies = await FindMoviesAsync(_searchMovie);
+		movieResults = movies.ToList();
+		StateHasChanged();
+	}
 }

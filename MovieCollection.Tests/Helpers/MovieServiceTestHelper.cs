@@ -18,8 +18,8 @@ namespace MovieCollection.Tests.Helpers
             : base()
         {
             var inMemorySettings = new Dictionary<string, string> {
-                {"TmdApi:BaseUrl", baseUrl},
-                {"TmdApi:ApiKey", apiKey},
+                {"TmdbApi:BaseUrl", baseUrl},
+                {"TmdbApi:ApiKey", apiKey},
                 };
 
             var configuration = new ConfigurationBuilder()
