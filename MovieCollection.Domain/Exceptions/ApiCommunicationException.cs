@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MovieCollection.Domain.Exceptions
 {
-    public class MovieDoesNotExistException : Exception
+    public class ApiCommunicationException : Exception
     {
+
     }
 }

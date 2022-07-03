@@ -20,6 +20,8 @@ builder.Services.AddAuthentication(o =>
 })
 .AddCookie();
 
+builder.Services.AddHttpClient();
+
 var connString = builder.Configuration.GetConnectionString("Database");
 
 if (Debugger.IsAttached)
@@ -33,6 +35,7 @@ else
 
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 var app = builder.Build();
 

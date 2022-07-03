@@ -29,14 +29,14 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MovieCollection.Tests.WebApp.Server.Tests
+namespace MovieCollection.Tests.WebApp.Server.IntegrationTests
 {
-    public class UserControllerTests
+    public class UsersControllerIntegrationTests : BaseControllerIntegrationTests
     {
         [Fact]
         public async Task Login_UsernameEmpty_ReturnsBadRequestWithMessage()
         {
-            var client = SetupTestAndGetClient(null);
+            var client = SetupTestAndGetClient();
             var content = BuildContent(new LoginRequest() { Password = "123" });
             
             var response = await client.PostAsync(MovieRoute.LoginUser, content);
@@ -49,7 +49,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
         [Fact]
         public async Task Login_PasswordEmpty_ReturnsBadRequestWithMessage()
         {
-            var client = SetupTestAndGetClient(null);
+            var client = SetupTestAndGetClient();
             var content = BuildContent(new LoginRequest() { UserName = "123" });
 
             var response = await client.PostAsync(MovieRoute.LoginUser, content);
@@ -187,7 +187,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             userServiceMock.Setup(
                 us => us.AuthenticateAndGetUserAsync(testUser.UserName, "testPassword").Result)
                         .Returns(testUser);
-            var client = SetupTestAndGetClient(userServiceMock.Object, null, true);
+            var client = SetupTestAndGetClient(userServiceMock.Object);
 
             var _ = await client.PostAsJsonAsync(MovieRoute.LoginUser, new LoginRequest() { UserName = testUser.UserName, Password = "testPassword" });
             var response = await client.GetAsync(MovieRoute.CurrentUser);
@@ -216,7 +216,7 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
             userServiceMock.Setup(
                 us => us.AuthenticateAndGetUserAsync(testUser.UserName, "testPassword").Result)
                         .Returns(testUser);
-            var client = SetupTestAndGetClient(userServiceMock.Object, null, true);
+            var client = SetupTestAndGetClient(userServiceMock.Object);
 
             var _ = await client.PostAsJsonAsync(MovieRoute.LoginUser, new LoginRequest() { UserName = testUser.UserName, Password = "testPassword" });
             var logoutResponse = await client.PostAsync(MovieRoute.LogoutUser, null);
@@ -229,53 +229,6 @@ namespace MovieCollection.Tests.WebApp.Server.Tests
         private HttpContent BuildContent(object jsonObj)
         {
             return new StringContent(JsonConvert.SerializeObject(jsonObj), Encoding.UTF8, "application/json");
-        }
-
-        private HttpClient SetupTestAndGetClient(
-            IUserService? userServiceMock = null, 
-            IAuthenticationService? authMock = null,
-            bool skipAuthMock = false)
-        {
-            if (userServiceMock == null)
-            {
-                userServiceMock = new Mock<IUserService>().Object;
-            }
-
-            if (authMock == null)
-            {
-                authMock = new Mock<IAuthenticationService>().Object;
-            }
-
-            var application = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureAppConfiguration((context, configBuilder) =>
-                    {
-                        configBuilder.AddInMemoryCollection(
-                            new Dictionary<string, string>
-                            {
-                                     {"ConnectionStrings:Database", $"Data Source=test.db"},
-                            });
-                    });
-
-                    builder.ConfigureServices(services =>
-                    {
-                        services.Remove(services.Single(d => d.ServiceType == typeof(DbContextOptions<MovieContext>)));
-                        services.Remove(services.Single(d => d.ServiceType == typeof(MovieContext)));
-
-                        services.AddDbContext<MovieContext, FileMovieContext>();
-                        services.AddScoped(p => userServiceMock);
-
-                        if (!skipAuthMock)
-                        {
-                            services.AddSingleton(p => authMock);
-                        }
-                    });
-                });
-            
-            var client = application.CreateClient();
-
-            return client;
         }
     }
 }

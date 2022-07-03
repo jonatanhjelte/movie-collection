@@ -1,24 +1,62 @@
-﻿using MovieCollection.Domain;
+﻿using Microsoft.Extensions.Configuration;
+using MovieCollection.Domain;
+using MovieCollection.Domain.Exceptions;
+using MovieCollection.Services.TmdbModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MovieCollection.Services.Implementations
 {
     public class MovieService : IMovieService
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
+        private readonly string _baseUrl;
+        private readonly string _apiKey;
 
-        public MovieService(HttpClient httpClient)
+        public MovieService(HttpClient httpClient, IConfiguration config)
         {
             _httpClient = httpClient;
+            _baseUrl = config["TmdApi:BaseUrl"].TrimEnd('/');
+            _apiKey = config["TmdApi:ApiKey"];
         }
 
         public async Task<IEnumerable<Movie>> FindMoviesByNameAsync(string name)
         {
-            return await Task.FromResult(new List<Movie>());
+            if (name.Length < 3)
+            {
+                return new List<Movie>();
+            }
+
+            var response = await _httpClient.GetAsync(@$"{_baseUrl}/search/movie?api_key={_apiKey}&language=en-US&query={name}&page=1&include_adult=false");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiCommunicationException();
+            }
+
+            var responseText = await response.Content.ReadAsStringAsync();
+            
+            try
+            {
+                var jsonMovies = JsonSerializer.Deserialize<IEnumerable<TmdbMovie>>(responseText);
+
+                if (jsonMovies == null)
+                {
+                    return new List<Movie>();
+                }
+
+                return jsonMovies.Select(m => m.ToMovie());
+            }
+            catch (JsonException)
+            {
+            }
+
+            return new List<Movie>();
         }
     }
 }

@@ -11,11 +11,11 @@ namespace MovieCollection.WebApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
         }
@@ -52,16 +52,14 @@ namespace MovieCollection.WebApp.Server.Controllers
         }
 
         [HttpGet("current")]
-        public async Task<ActionResult<User>> GetCurrentUserAsync()
+        public ActionResult<User> GetCurrentUserAsync()
         {
-            if (User.Identity != null 
-                && User.Identity.IsAuthenticated)
+            if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                return await Task.FromResult(
-                    Ok(new User() { UserName = User.FindFirstValue(ClaimTypes.Name)}));
+                return Ok(new User() { UserName = User.FindFirstValue(ClaimTypes.Name) });
             }
 
-            return await Task.FromResult(Unauthorized("Not logged in"));
+            return Unauthorized("Not logged in");
         }
 
         [HttpPost("create")]
