@@ -10,17 +10,16 @@
 	</Authorized>
 
 	<NotAuthorized>
-		<MudGrid>
-			<MudItem xs="12" md="6" >
-				<MudText Class="mb-5 mt-5" Typo="Typo.h5">Mega Movie Collection</MudText>
-				<MudText>- Create lists of all the movies you have seen</MudText>
-				<MudText>- Create collections of physical media</MudText>
-				<MudText>- Rate movies</MudText>
+		<MudGrid Class="mt-5">
+			<MudItem xs="12" md="5" Class="d-flex justify-center align-center">
+				<MudImage Src="img/filmkulting.png" Height="200"></MudImage>
 			</MudItem>
-			<MudItem xs="12" md="6">
+
+			<MudItem xs="12" md="5">
 				<MudText Class="mt-5 mb-5" Typo="Typo.h5">Get started now</MudText>
 				<LoginComponent OnLogin="Login" ErrorMessage="@ErrorMessage" OnTextChanged="ClearErrorMessage"/>
 			</MudItem>
+			
 		</MudGrid>
 
 	</NotAuthorized>

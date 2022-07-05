@@ -3,15 +3,32 @@
 
 <AuthorizeView>
 	<Authorized>
-		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Logout">Logout</MudButton>
+		<MudItem md="12" xs="12" Class="d-flex justify-center align-center">
+			<MudImage Src="img/filmkulting.png" Height="200"></MudImage>
+		</MudItem>
 
-		<MudTextField T="string" id="searchMovie" @bind-Text="searchMovie" Immediate="true" />
 
-		@foreach (var movie in movieResults)
+		<MudText Typo="Typo.h5" Class="mb-5 mt-5">Find Movies</MudText>
+		
+		<MudTextField Label="Find Movie" T="string" id="searchMovie" TextChanged="OnSearchMovieChanged" Immediate="true" />
+
+		@if (movieResults.Any())
 		{
-			<p>@movie.Name</p>
+			<MudPaper>
+				<MudList Clickable="true" SelectedItemChanged="OnSelectedMovieChanged">
+					@foreach (var movie in movieResults)
+					{
+						<MudListItem Icon="@Icons.Material.Filled.Movie" Value="@movie.MovieDatabaseId">
+							@movie.Name
+						</MudListItem>
+					}
+				</MudList>
+			</MudPaper>
 		}
+		
+		<MudText Typo="Typo.h5" Class="mt-5 mb-5">My Collection</MudText>
 
+		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Logout">Logout</MudButton>
 	</Authorized>
 	<NotAuthorized>
 		@if (true) NavigationManager.NavigateTo("login", true);
@@ -21,25 +38,15 @@
 @code{
 	private List<Movie> movieResults = new List<Movie>();
 
-	private string searchMovie 
+	private async Task OnSearchMovieChanged(string text)
 	{
-		get
-		{
-			return _searchMovie;
-		}
-
-		set
-		{
-			_searchMovie = value;
-			_ = OnSearchMovieChanged();
-		}
-	}
-	private string _searchMovie = string.Empty;
-
-	private async Task OnSearchMovieChanged()
-	{
-		var movies = await FindMoviesAsync(_searchMovie);
+		var movies = await FindMoviesAsync(text);
 		movieResults = movies.ToList();
 		StateHasChanged();
+	}
+
+	private void OnSelectedMovieChanged(MudListItem movie)
+	{
+		NavigationManager.NavigateTo($"movie/{movie.Value}");
 	}
 }

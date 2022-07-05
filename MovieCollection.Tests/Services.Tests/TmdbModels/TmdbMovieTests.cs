@@ -13,22 +13,12 @@ namespace MovieCollection.Tests.Services.Tests.TmdbModels
         [Fact]
         public void ToMovie_HasAllRelevantProperties_MapsPropertiesProperly()
         {
-            var tm = new TmdbMovie() { imdb_id = "123test", title = "123title" };
+            var tm = new TmdbMovie() { id = 123, title = "123title" };
 
             var movie = tm.ToMovie();
 
-            Assert.Equal(tm.imdb_id, movie.MovieDatabaseId);
+            Assert.Equal(tm.id.ToString(), movie.MovieDatabaseId);
             Assert.Equal(tm.title, movie.Name);
-        }
-
-        [Fact]
-        public void ToMovie_HasNoImdbId_SetsMovieDatabaseIdProperly()
-        {
-            var tm = new TmdbMovie() { imdb_id = null };
-
-            var movie = tm.ToMovie();
-
-            Assert.Equal("tt0000000", movie.MovieDatabaseId);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace MovieCollection.Services.TmdbModels
         public string original_title { get; set; } = string.Empty;
         public string? overview { get; set; }
         public decimal popularity { get; set; }
-        public DateTime? release_date { get; set; }
+        public string? release_date { get; set; }
         public int revenue { get; set; }
         public int? runtime { get; set; }
         public TmdbStatus status { get; set; }
@@ -36,7 +36,7 @@ namespace MovieCollection.Services.TmdbModels
         {
             return new Movie()
             {
-                MovieDatabaseId = imdb_id ?? "tt0000000",
+                MovieDatabaseId = id.ToString(),
                 Name = title,
             };
         }

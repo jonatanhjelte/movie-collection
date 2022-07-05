@@ -2,14 +2,25 @@
 
 <div class="page">
     <main>
-        <MudThemeProvider/>
+        <MudThemeProvider Theme="_mudTheme"/>
         <MudDialogProvider/>
         <MudSnackbarProvider/>
-        <div class="top-row px-4">
-        </div>
+@*        <div class="top-row px-4">
+        </div>*@
 
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+@code{
+    private MudTheme _mudTheme = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Primary = "#6e0142",
+            Secondary = "#f8badc",
+        }
+    };
+}

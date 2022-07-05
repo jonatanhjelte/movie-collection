@@ -69,10 +69,8 @@ namespace MovieCollection.Tests.Services.Tests
 
             var movies = await helper.MovieService.FindMoviesByNameAsync("1234");
 
-            Assert.Equal(movies.ElementAt(0).Name, jsonMovie1.title);
-            Assert.Equal(movies.ElementAt(0).MovieDatabaseId, jsonMovie1.imdb_id);
-            Assert.Equal(movies.ElementAt(1).Name, jsonMovie2.title);
-            Assert.Equal(movies.ElementAt(1).MovieDatabaseId, jsonMovie2.imdb_id);
+            Assert.Equal(movies.ElementAt(0), jsonMovie1.ToMovie());
+            Assert.Equal(movies.ElementAt(1), jsonMovie2.ToMovie());
         }
 
         [Fact]

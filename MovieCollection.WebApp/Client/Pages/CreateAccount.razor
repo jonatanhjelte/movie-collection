@@ -1,28 +1,33 @@
 ﻿@page "/CreateAccount"
 @inherits CreateAccountPageModel
 
-<h3>CreateAccount</h3>
+<MudItem md="7" xs="12" Class="d-flex justify-center align-center">
+	<MudImage Src="img/filmkulting.png" Height="200"></MudImage>
+</MudItem>
 
-<MudPaper Class="pa-4 mr-5">
-	<MudForm @ref="form">
-		<MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
-		<MudTextField T="string" @bind-Text="email" Label="Email" RequiredError="Email is required" Required="true"/>
-		<MudTextField id="password" T="string" InputType="InputType.Password" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
-		<MudTextField id="passwordConfirm" T="string" InputType="InputType.Password" @bind-Text="confirmPassword" Label="Confirm password" RequiredError="Password is required" Required="true"/>
-		<MudButton id="createButton" OnClick="ClickCreateButton" Disabled="@isBusy" Class="mt-5" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">
-			@if (@isBusy)
+<MudItem md="7" xs="12">
+	<MudText Class="mt-5 mb-5" Typo="Typo.h5">Create account</MudText>
+	<MudPaper Class="pa-4 mr-5">
+		<MudForm @ref="form">
+			<MudTextField T="string" @bind-Text="userName" Label="Username" RequiredError="Username is required" Required="true"/>
+			<MudTextField T="string" @bind-Text="email" Label="Email" RequiredError="Email is required" Required="true"/>
+			<MudTextField id="password" T="string" InputType="InputType.Password" @bind-Text="password" Label="Password" RequiredError="Password is required" Required="true"/>
+			<MudTextField id="passwordConfirm" T="string" InputType="InputType.Password" @bind-Text="confirmPassword" Label="Confirm password" RequiredError="Password is required" Required="true"/>
+			<MudButton id="createButton" OnClick="ClickCreateButton" Disabled="@isBusy" Class="mt-5" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">
+				@if (@isBusy)
+				{
+					<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+					<MudText Class="ms-2">Creating account...</MudText>     
+				}
+				else
+				{
+					<MudText>Create account</MudText>
+				}
+			</MudButton>
+			@if (!string.IsNullOrWhiteSpace(ErrorMessage))
 			{
-				<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-				<MudText Class="ms-2">Creating account...</MudText>     
+				<MudAlert Class="mt-2" Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
 			}
-			else
-			{
-				<MudText>Create account</MudText>
-			}
-		</MudButton>
-		@if (!string.IsNullOrWhiteSpace(ErrorMessage))
-		{
-			<MudAlert Class="mt-2" Severity="Severity.Error">@(ErrorMessage)</MudAlert>    
-		}
-	</MudForm>
-</MudPaper>
+		</MudForm>
+	</MudPaper>
+</MudItem>
