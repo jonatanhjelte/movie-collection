@@ -7,19 +7,28 @@ using MovieCollection.Services.Implementations;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.AddAzureWebAppDiagnostics();
 
-// Add services to the container.
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+    config.AddJsonFile("appsettings.json", optional: false) 
+          .AddJsonFile("appsettings.local.json", optional: true)
+          .AddEnvironmentVariables();
+
+    if (args != null)
+    {
+        config.AddCommandLine(args);
+    }
+});
+
+builder.Logging.AddAzureWebAppDiagnostics();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-
 builder.Services.AddAuthentication(o =>
 {
     o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
 .AddCookie();
-
 builder.Services.AddHttpClient();
 
 var connString = builder.Configuration.GetConnectionString("Database");
@@ -32,7 +41,6 @@ else
 {
     builder.Services.AddDbContext<MovieContext>();
 }
-
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMovieService, MovieService>();

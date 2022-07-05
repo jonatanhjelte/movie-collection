@@ -402,3 +402,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/MovieCollection.WebApp/Server/appsettings.local.json
